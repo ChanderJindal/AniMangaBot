@@ -1,5 +1,4 @@
 import discord
-import os
 import animanga as AM
 
 client = discord.Client()
