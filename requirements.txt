@@ -1,0 +1,4 @@
+discord
+os
+bs4
+requests
