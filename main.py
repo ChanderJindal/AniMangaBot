@@ -46,4 +46,7 @@ async def on_message(message):
         await message.channel.send(AM.Manga())
         return
 
-client.run(ENV['TOKEN'])
+from boto.s3.connection import S3Connection
+s3 = S3Connection(os.environ['TOKEN'])
+
+client.run(s3)
