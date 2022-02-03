@@ -47,6 +47,7 @@ async def on_message(message):
         return
 
 from boto.s3.connection import S3Connection
+import os
 s3 = S3Connection(os.environ['TOKEN'])
 
 client.run(s3)
