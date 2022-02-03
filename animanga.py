@@ -29,10 +29,11 @@ def Anime():
 
   AniMix_Link = "https://animixplay.to/v1/detective-conan/ep" + str(EpisodeNumber)
 
-  return f'''
-  New Episode #{EpisodeNumber} :- {EpisodeName}
-  Link:- {AniMix_Link}
-  '''
+  return EpisodeNumber , EpisodeName , AniMix_Link
+  #f'''
+  #New Episode #{EpisodeNumber} :- {EpisodeName}
+  #Link:- {AniMix_Link}
+  #'''
 def Manga():
   Site_Link = "https://www.readdetectiveconanarc.com/"
 
@@ -49,11 +50,12 @@ def Manga():
 
   ImageLink = soup.find('img', alt="Read Detective Conan Chapter 1086 - Page 1 For Free In The Highest Quality")["data-lazy-src"]
 
-  return f'''
-  New Manga #{Edition}
-  Link:- {Link}
-  {ImageLink}
-  '''
+  return Edition , Link 
+  #f'''
+  #New Manga #{Edition}
+  #Link:- {Link}
+  #{ImageLink}
+  #'''
 
 if __name__ == "__main__":
   print("Here")
