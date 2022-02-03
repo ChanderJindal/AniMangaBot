@@ -47,10 +47,8 @@ async def on_message(message):
         await message.channel.send(AM.Manga())
         return
 
-import environ
-env = environ.Env(
-  DEBUG = (bool,False)
-)
-tk = env('TOKEN')
+import os
+
+tk = os.environ['TOKEN']
 
 client.run(tk)
