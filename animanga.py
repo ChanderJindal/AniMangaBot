@@ -44,7 +44,7 @@ def Manga():
   #I know it was initially a string, but it was in form of a slice, thus immutable
   Link = Link[0:len(Link)-1]
 
-  Edition = int(Link.split('-')[-1])
+  Edition = Link.split('-')[-1]
 
   soup = Get_Soup(Link)
 
