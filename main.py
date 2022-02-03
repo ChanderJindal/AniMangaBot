@@ -1,6 +1,7 @@
 from distutils.debug import DEBUG
 import discord
 import animanga as AM
+import commands as C
 
 client = discord.Client()
 
@@ -40,11 +41,11 @@ async def on_message(message):
         return
     
       if "anime" in msg:
-        await message.channel.send(AM.Anime())
+        await message.channel.send(C.EpisodeUpdate())
         return
       
       if "manga" in msg:
-        await message.channel.send(AM.Manga())
+        await message.channel.send(C.MangaUpdate())
         return
 
 import os
