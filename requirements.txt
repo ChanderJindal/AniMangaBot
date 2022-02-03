@@ -2,5 +2,4 @@ discord
 bs4
 requests
 lxml
-boto
-os
+environ

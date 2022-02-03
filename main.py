@@ -1,3 +1,4 @@
+from distutils.debug import DEBUG
 import discord
 import animanga as AM
 
@@ -46,8 +47,10 @@ async def on_message(message):
         await message.channel.send(AM.Manga())
         return
 
-from boto.s3.connection import S3Connection
-import os
-s3 = S3Connection(os.environ['TOKEN'])
+import environ
+env = environ.Env(
+  DEBUG = (bool,False)
+)
+tk = env('TOKEN')
 
-client.run(s3)
+client.run(tk)
