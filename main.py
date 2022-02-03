@@ -46,4 +46,4 @@ async def on_message(message):
         await message.channel.send(AM.Manga())
         return
 
-client.run('OTM4NDg3NDExODE2NjkzODQz.YfrAgw.zLHkCt36lHuvC4tUBBwdwlbm46Q')
+client.run(TOKEN)
