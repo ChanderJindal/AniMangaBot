@@ -46,4 +46,4 @@ async def on_message(message):
         await message.channel.send(AM.Manga())
         return
 
-client.run(process.env.IP.TOKEN)
+client.run(ENV['TOKEN'])
