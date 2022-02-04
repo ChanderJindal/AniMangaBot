@@ -48,7 +48,7 @@ def Manga():
 
   soup = Get_Soup(Link)
 
-  #ImageLink = soup.find('img', alt="Read Detective Conan Chapter 1086 - Page 1 For Free In The Highest Quality")["data-lazy-src"]
+  ImageLink = soup.find('img', alt="Read Detective Conan Chapter {Edition} - Page 1 For Free In The Highest Quality")["data-lazy-src"]
 
   return Edition , Link 
   #f'''
