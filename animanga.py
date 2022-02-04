@@ -46,9 +46,11 @@ def Manga():
 
   Edition = Link.split('-')[-1]
 
+  '''
+  To get first Page of Manga, but it already comes with the manga link
   soup = Get_Soup(Link)
-
-  ImageLink = soup.find('img', alt="Read Detective Conan Chapter {Edition} - Page 1 For Free In The Highest Quality")["data-lazy-src"]
+  ImageLink = soup.find('img', alt="Read Detective Conan Chapter "+str(Edition)+" - Page 1 For Free In The Highest Quality")["data-lazy-src"]
+  '''
 
   return Edition , Link 
   #f'''
