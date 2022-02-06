@@ -25,7 +25,7 @@ def Anime():
   Latest_Ep = List_Items[-1]
   #the most recent one
 
-  Link_Part_2 = Latest_Ep.a["herf"]
+  Link_Part_2 = Latest_Ep.a["href"]
   #it only carries the later half 
 
   Link_Part_1 = "https://ww1.gogoanime2.org/"
