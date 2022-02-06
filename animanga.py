@@ -5,31 +5,45 @@ def Get_Soup(link):
   return BS( r.get(link).text, features="lxml")
 
 def Anime():
-  Site_Link = "https://myanimelist.net/anime/235/Detective_Conan/episode"
-
+  #Site_Link = "https://myanimelist.net/anime/235/Detective_Conan/episode" #- slow updates 
+  Site_Link = "https://ww1.gogoanime2.org/anime/detective-conan"
   Base_Soup = Get_Soup(Site_Link)
   #Initial Page
 
-  EpRange = Base_Soup.find('div', class_ = "pagination ac")
-  #Getting the range
+  Lower_Half = Base_Soup.find('div',id = "anime_video_body")
+  #Getting the Lower Half
 
-  LatestOne = EpRange.find_all('a',class_ = "link")[-1]
-  #Picked the Last Range
+  Grid_Ep = Lower_Half.find('div',id = "load_ep")
+  #Picked the Grid
 
-  Correct_Page_Link = LatestOne["href"]
+  List_Ep = Grid_Ep.find('ul', id = "episode_related" )
+  # got the unordered list of all the ep ASC
 
-  Correct_Soup = Get_Soup(Correct_Page_Link)
-  #Onto the page with Latest Ep
+  List_Items = List_Ep.find_all('li')
+  #Turned the previous list of CSS into my list
 
-  LatestEp = Correct_Soup.find_all('a', class_="fl-l fw-b")[-1]
-  #got the tag with correct info
+  Latest_Ep = List_Items[-1]
+  #the most recent one
 
-  EpisodeName = LatestEp.text
-  EpisodeNumber = LatestEp["href"].split('/')[-1]
+  Link_Part_2 = str(Latest_Ep.a["herf"])
+  #it only carries the later half 
 
-  AniMix_Link = "https://animixplay.to/v1/detective-conan/ep" + str(EpisodeNumber)
+  Link_Part_1 = "https://ww1.gogoanime2.org/"
+  #This is given
 
-  return EpisodeNumber , EpisodeName , AniMix_Link
+  Link_Full = Link_Part_1 + Link_Part_2
+
+  Ep_Number = Latest_Ep.find('div',class_ = "name").text
+  #this returns like 'EP 201'
+
+  EP_Type = Latest_Ep.find('div',class_="cate").text
+  #to see if it's 'DUB' or 'SUB'
+
+  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/' + str(Ep_Number).lower().replace(" ","")
+
+  #statement = f'{Ep_Number}  {EP_Type}\nThis Episode is Available on\n{AniMixPlay_Link}\n{Link_Full}'
+
+  return Ep_Number , AniMixPlay_Link , Link_Full,EP_Type
   #f'''
   #New Episode #{EpisodeNumber} :- {EpisodeName}
   #Link:- {AniMix_Link}

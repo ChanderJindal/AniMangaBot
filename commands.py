@@ -11,27 +11,33 @@ def MakeMangaFile(Num):
     f.close()
 
 def EpisodeUpdate():
-    Current_Number , name , link = AM.Anime()
+    Current_Number , AniLink , GogoLink, EpType = AM.Anime()
     try:
         f1= open("Latest_Ep.txt",mode='r')
         Last_Number = f1.read()
         f1.close()
         if Last_Number == Current_Number:
             return f'''No Updates Yet. Lastest Episode till now is:-
-            Episode Number#{Current_Number} :- {name}
-            can be found at {link}
+            {Current_Number}  {EpType}
+            can be found at 
+            {AniLink}
+            {GogoLink}
             '''
         else:
             MakeEpFile(Current_Number)
             return f'''The Latest Episode is out!
-            Episode Number#{Current_Number} :- {name}
-            can be found at {link}
+            {Current_Number}  {EpType}
+            can be found at 
+            {AniLink}
+            {GogoLink}
             '''
     except:
         MakeEpFile(Current_Number)
         return f'''The Current Latest Episode is:-
-        Episode Number#{Current_Number} :- {name}
-        can be found at {link}
+        {Current_Number}  {EpType}
+        can be found at 
+        {AniLink}
+        {GogoLink}
         '''
 
 def MangaUpdate():
