@@ -2,6 +2,8 @@ from distutils.debug import DEBUG
 import discord
 import commands as C
 from discord.ext import commands
+import datetime 
+import asyncio
 
 '''
 New Base!
@@ -9,7 +11,26 @@ New Base!
 async def foo(ctx, arg):
     await ctx.send(arg)
 '''
+
+Anime_Channel = 736777686596190208
+Manga_Channel = 736776933014110338
+
 bot = commands.Bot(command_prefix='$', case_insensitive=True)# this is to check prefix, yes prefix can be changed using file system
+
+async def schedule_daily_message():
+  while True:
+    await asyncio.sleep(3600) #sleeps for 1 hr
+    
+    Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
+    if Val != False:#if anything but False then pass
+      channel = bot.get_channel(Anime_Channel)
+      await channel.send(embed=Val)
+
+    Val = C.Manga_Update_Check()#same as above but for manga
+    if Val != False:
+      channel = bot.get_channel(Manga_Channel)
+      await channel.send(embed=Val)
+
 
 @bot.event
 async def on_ready():

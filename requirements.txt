@@ -2,4 +2,4 @@ discord
 bs4
 requests
 lxml
-
+asyncio

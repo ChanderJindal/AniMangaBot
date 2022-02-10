@@ -5,6 +5,11 @@ import json
 def Get_Soup(link):
   return BS( r.get(link).text, features="lxml")
 
+def Last_Episode_file_Update(Ep):
+    f = open("Last_Episode.txt","w+")
+    f.write(Ep)
+    f.close()
+    return
 
 def Anime():#This is main one
   #Site_Link = "https://myanimelist.net/anime/235/Detective_Conan/episode" #- slow updates 
@@ -37,6 +42,8 @@ def Anime():#This is main one
 
   Ep_Number = Latest_Ep.find('div',class_ = "name").text
   #this returns like 'EP 201'
+
+  Last_Episode_file_Update(Ep_Number.split()[1])
 
   #EP_Type = Latest_Ep.find('div',class_="cate").text
   #to see if it's 'DUB' or 'SUB'
@@ -81,7 +88,7 @@ def AnimeBackup():
   #Link:- {AniMix_Link}
   #'''
   #)
-  return EpisodeName , EpisodeNumber, AniMix_Link, Gogo_Link
+  return EpisodeNumber, EpisodeName ,AniMix_Link, Gogo_Link
 
 
 ########################################################## Manga ##########################################################
@@ -211,7 +218,7 @@ def Manga_Backup():
 if __name__ == "__main__":
   print("Here")
   print(Anime())
-  #print(MangaDex_Anime_ID_update())
+  print(MangaDex_Anime_ID_update())
   print("Here")
   print(Manga())
   print("Here")
