@@ -16,7 +16,7 @@ Anime_Channel = 736777686596190208
 Manga_Channel = 736776933014110338
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)# this is to check prefix, yes prefix can be changed using file system
-
+'''
 async def schedule_daily_message():
   while True:
     await asyncio.sleep(3600) #sleeps for 1 hr
@@ -30,14 +30,18 @@ async def schedule_daily_message():
     if Val != False:
       channel = bot.get_channel(Manga_Channel)
       await channel.send(embed=Val)
-
+'''
 
 @bot.event
 async def on_ready():
     print('We can begin the Crafting as {0.user}'.format(bot))
     #this is what is shows when the bot is online
-    await schedule_daily_message()
+    #await schedule_daily_message()
     #to trigger the schedule above
+
+@bot.command()
+async def prefix(ctx):
+  await ctx.send('$')
 
 @bot.command()
 async def hello(ctx):

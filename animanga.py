@@ -11,7 +11,7 @@ def Last_Episode_file_Update(Ep):
     f.close()
     return
 
-def Anime():#This is main one
+def Anime():#This is main one - 3 outputs
   #Site_Link = "https://myanimelist.net/anime/235/Detective_Conan/episode" #- slow updates 
   Site_Link = "https://ww1.gogoanime2.org/anime/detective-conan"
   Base_Soup = Get_Soup(Site_Link)

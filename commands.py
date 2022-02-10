@@ -1,4 +1,3 @@
-from typing import final
 import animanga as AM
 import discord
 
