@@ -1,10 +1,6 @@
 import animanga as AM
 import discord
 
-##################################### Anime & Manga Channel IDs #####################################
-
-Anime_Channel = 736777686596190208
-Manga_Channel = 736776933014110338
 ##################################### Anime & Manga Updates #####################################
 
 def EpisodeUpdate():
