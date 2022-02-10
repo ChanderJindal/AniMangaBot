@@ -28,14 +28,14 @@ def MangaUpdate(flag = False):
 
     try:
         Chapter , MangaDexLink = AM.Manga()
-        embedVar = discord.Embed(title="MangaDex.org's Manga Update", description=f'**Chapter#{Chapter}is available!**', color=5763719)#Green
+        embedVar = discord.Embed(title="MangaDex.org's Manga Update", description=f'**Chapter#{Chapter} is available!**', color=5763719)#Green
         embedVar.add_field(name="MangaDex Link", value=f'{MangaDexLink}', inline=False)
         return embedVar
         #return f'''MangaDex has got Chapter#{Chapter}. Read it at {MangaDexLink} '''
     except:
         try:
             Chapter , Link = AM.Manga_Backup()
-            embedVar = discord.Embed(title="readdetectiveconanarc.com's Manga Update", description=f'**Chapter#{Chapter}is available!**', color=16705372)#Yellow
+            embedVar = discord.Embed(title="readdetectiveconanarc.com's Manga Update", description=f'**Chapter#{Chapter} is available!**', color=16705372)#Yellow
             embedVar.add_field(name="MangaDex Link", value=f'{Link}', inline=False)
             return embedVar
             #return f'''**readdetectiveconanarc.com** has got Chapter#{Chapter}. Read it at {Link} '''
