@@ -1,6 +1,5 @@
 from distutils.debug import DEBUG
 import discord
-import animanga as AM
 import commands as C
 
 client = discord.Client()
