@@ -1,5 +1,5 @@
 import animanga as AM
-#import discord
+import discord
 
 ##################################### Anime & Manga Updates #####################################
 
