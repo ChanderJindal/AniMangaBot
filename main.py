@@ -49,7 +49,7 @@ async def hello(ctx):
     #reply to the {Prefix}Hello
   
 @bot.command()
-async def echo(ctx, arg):
+async def echo(ctx, *, arg):
     await ctx.send(arg)
     #Reply to {Prefix}echo arguments, returns the arguments
 
