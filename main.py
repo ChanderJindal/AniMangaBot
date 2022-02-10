@@ -41,11 +41,11 @@ async def on_message(message):
         return
     
       if "anime" in msg:
-        await message.channel.send(C.EpisodeUpdate())
+        await message.channel.send(embed = C.EpisodeUpdate())
         return
       
       if "manga" in msg:
-        await message.channel.send(C.MangaUpdate())
+        await message.channel.send(embed =C.MangaUpdate())
         return
 
 import os
