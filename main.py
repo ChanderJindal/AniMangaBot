@@ -35,7 +35,7 @@ async def schedule_daily_message():
 async def on_ready():
     print('We can begin the Crafting as {0.user}'.format(bot))
     #this is what is shows when the bot is online
-    
+
     await schedule_daily_message()
     #to trigger the schedule above
 
@@ -45,7 +45,7 @@ async def prefix(ctx):
 
 @bot.command()
 async def hello(ctx):
-    await ctx.send(f'Hello!  {ctx.author}')
+    await ctx.send(f'Hello!  {ctx.author.mention}')
     #reply to the {Prefix}Hello
   
 @bot.command()
