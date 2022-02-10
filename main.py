@@ -30,7 +30,7 @@ async def on_message(message):
       #message name update
       msg = msg[len(prefix):]
       #await message.channel.send(msg)
-
+      msg = msg.strip()
       #basic starting test
       if msg.startswith('hello'):
         await message.channel.send('Hello!')

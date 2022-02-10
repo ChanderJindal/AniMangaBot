@@ -3,6 +3,7 @@ import animanga as AM
 def EpisodeUpdate():
     try:
         EpNumber , AniMixLink , GogoLink = AM.Anime()
+        EpNumber = EpNumber.split()[1]
         return f'''ww1.gogoanime2.org says, that
         Episode#{EpNumber} is available at {GogoLink}
         You can also find it at 
@@ -20,7 +21,7 @@ def EpisodeUpdate():
         except:
             return f'The bot is unable to search any Links for Detecctive Conan Episodes, pls have a look at back end.'
 
-def MangaUpdate():
+def MangaUpdate(flag = False):
 
     try:
         Chapter , MangaDexLink = AM.Manga()
@@ -34,6 +35,10 @@ def MangaUpdate():
             {Link}
             '''
         except:
+            if (flag == False):
+                AM.MangaDex_Anime_ID_update()
+                AM.Last_Chapter_Update()
+                return MangaUpdate(True)
             return f'The bot is unable to search any Links for Detecctive Conan Mangas, pls have a look at back end.'
 
     
