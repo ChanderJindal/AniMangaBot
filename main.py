@@ -20,7 +20,7 @@ bot = commands.Bot(command_prefix='$', case_insensitive=True)# this is to check 
 async def schedule_daily_message():
   while True:
     await asyncio.sleep(3600) #sleeps for 1 hr
-    
+
     Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
     if Val != False:#if anything but False then pass
       channel = bot.get_channel(Anime_Channel)
@@ -36,6 +36,8 @@ async def schedule_daily_message():
 async def on_ready():
     print('We can begin the Crafting as {0.user}'.format(bot))
     #this is what is shows when the bot is online
+    await schedule_daily_message()
+    #to trigger the schedule above
 
 @bot.command()
 async def hello(ctx):
