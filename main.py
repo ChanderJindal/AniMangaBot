@@ -15,7 +15,7 @@ Manga_Channel = 736776933014110338
 test_channel = 829814770453839895
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)# this is to check prefix, yes prefix can be changed using file system
-
+'''
 async def tester():
   while True:
 
@@ -31,7 +31,7 @@ async def tester():
     if Val != False:
       await channel.send(embed=Val)
     await channel.send("This command is not here.")
-
+'''
 async def schedule_daily_message():
   while True:
     await asyncio.sleep(3600) #sleeps for 1 hr
@@ -54,10 +54,10 @@ async def on_ready():
     await schedule_daily_message()
     #to trigger the schedule above
 
-    await tester()
+    #await tester()
 
 @bot.command()
-async def test(ctx):
+async def test(ctx): #this is just to see if the IF CONDITION is working
   channel = bot.get_channel(test_channel)
   await channel.send("This command is here.")
   Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
