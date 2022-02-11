@@ -117,7 +117,7 @@ def MangaDex_Anime_ID_update():#DC ->Detective Conan
 
 def Last_Chapter_file_Update(Chapter):
     f = open("Last_Chapter.txt","w+")
-    f.write(Chapter)
+    f.write(str(Chapter))
     f.close()
     return
 
@@ -165,13 +165,13 @@ def Manga():# For MangaDex
     #print(link)
     Manga_ID = json_data['data'][0]['id']
 
-    Last_Chapter_file_Update(Chapter=Chapter)
+    Last_Chapter_file_Update(Chapter=str(Chapter))
     #Since now it's Chapter + 1
 
   except:
     #So, chapter +1 is now out yet, so back to previous one
       #print("here1")
-      Chapter = Chapter - 1
+      Chapter = int(Chapter) - 1
       link = f'https://api.mangadex.org/chapter?manga={Anime_ID}&chapter={str(Chapter)}&translatedLanguage[]=en'
       response = r.get(link)
       json_data = response.json()
