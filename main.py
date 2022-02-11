@@ -54,6 +54,8 @@ async def on_ready():
     await schedule_daily_message()
     #to trigger the schedule above
 
+    await tester()
+
 @bot.command()
 async def prefix(ctx):
   await ctx.send('$')
