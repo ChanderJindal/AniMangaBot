@@ -57,7 +57,7 @@ async def on_ready():
     await tester()
 
 @bot.command()
-async def test():
+async def test(ctx):
   channel = bot.get_channel(test_channel)
   await channel.send("This command is here.")
   Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
