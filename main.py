@@ -51,7 +51,7 @@ async def on_ready():
     print('We can begin the Crafting as {0.user}'.format(bot))
     #this is what is shows when the bot is online
 
-    await schedule_daily_message()
+    await schedule_daily_message()#PS- Only 1 such function can work here at a time, as this function was never complete anything below it wouldn't work
     #to trigger the schedule above
 
     #await tester()
