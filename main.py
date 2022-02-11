@@ -57,6 +57,19 @@ async def on_ready():
     await tester()
 
 @bot.command()
+async def test():
+  channel = bot.get_channel(test_channel)
+  await channel.send("This command is here.")
+  Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
+  if Val != False:#if anything but False then pass
+    await channel.send(embed=Val)
+
+  Val = C.Manga_Update_Check()#same as above but for manga
+  if Val != False:
+    await channel.send(embed=Val)
+  await channel.send("This command is not here.") 
+
+@bot.command()
 async def prefix(ctx):
   await ctx.send('$')
 
