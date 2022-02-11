@@ -186,7 +186,7 @@ def Manga():# For MangaDex
 
   Final_Link = f'https://mangadex.org/chapter/{Manga_ID}/{PageNumber}'
   
-  return Chapter , Final_Link
+  return str(Chapter) , Final_Link
 
 def Manga_Backup():
   Site_Link = "https://www.readdetectiveconanarc.com/"

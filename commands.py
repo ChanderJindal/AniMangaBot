@@ -60,7 +60,7 @@ def Manga_Update_Check(flag = True):
     f.close()
     try:
         Chapter , MangaDexLink = AM.Manga()
-        if str(Chapter).split() == CurrCh:
+        if Chapter == CurrCh:
             return False
         embedVar = discord.Embed(title="MangaDex.org's Manga Update", description=f'**Chapter#{Chapter} is available!**', footer = "Auto-Updates", color=5763719)#Green
         embedVar.add_field(name="MangaDex Link", value=f'{MangaDexLink}', inline=False)
@@ -68,7 +68,7 @@ def Manga_Update_Check(flag = True):
     except:
         try:
             Chapter , Link = AM.Manga_Backup()
-            if str(Chapter).split() == CurrCh:
+            if Chapter == CurrCh:
                 return False
             embedVar = discord.Embed(title="readdetectiveconanarc.com's Manga Update", description=f'**Chapter#{Chapter} is available!**', footer = "Auto-Updates", color=16705372)#Yellow
             embedVar.add_field(name="MangaDex Link", value=f'{Link}', inline=False)
