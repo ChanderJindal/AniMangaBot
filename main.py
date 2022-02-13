@@ -1,3 +1,4 @@
+from pickle import TRUE
 import discord
 import commands as C
 from discord.ext import commands
@@ -35,8 +36,8 @@ async def tester():
     await channel.send("This command is not here.")
 '''
 
-async def AutoUpdates(AVal,MVal):
-  while True:
+async def AutoUpdates(AVal,MVal,flag = TRUE):
+  while flag == True:
     Val = C.EpisodeUpdate() #New way to check, get the regular message
     EmbedDict = Val.to_dict()
     if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
@@ -80,7 +81,7 @@ async def test(ctx): #this is just to see if the IF CONDITION is working
   await channel.send("This command is here.")
   AVal = C.LatestAnimeEpisode()
   MVal = C.LatestMangaChapter()
-  await AutoUpdates(AVal,MVal)
+  await AutoUpdates(AVal,MVal,flag=False)
   await channel.send("This command is not here.") 
 
 @bot.command()
