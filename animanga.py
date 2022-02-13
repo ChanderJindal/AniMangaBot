@@ -35,7 +35,7 @@ def Anime():#This is main one - 3 outputs
   Link_Part_2 = Latest_Ep.a["href"]
   #it only carries the later half 
 
-  Link_Part_1 = "https://ww1.gogoanime2.org/"
+  Link_Part_1 = "https://ww1.gogoanime2.org"
   #This is given
 
   GogoLink = Link_Part_1 + Link_Part_2
@@ -82,7 +82,7 @@ def AnimeBackup():
   EpisodeNumber = LatestEp["href"].split('/')[-1]
 
   AniMix_Link = "https://animixplay.to/v1/detective-conan/ep" + str(EpisodeNumber)
-  Gogo_Link = "https://ww1.gogoanime2.org//watch/detective-conan/" + str(EpisodeNumber)
+  Gogo_Link = "https://ww1.gogoanime2.org/watch/detective-conan/" + str(EpisodeNumber)
   #print(f'''
   #New Episode #{EpisodeNumber} :- {EpisodeName}
   #Link:- {AniMix_Link}
