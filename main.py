@@ -15,6 +15,8 @@ Anime_Channel = 736777686596190208
 Manga_Channel = 736776933014110338
 test_channel = 829814770453839895
 DelMsg = True
+Yeah = ["y","Y","ye","Ye","YE","yes","YES","Okay","K","k","Kay","true","T","t","true",True,1]
+Nah = ["n","N","no","No","F","f","false",False,0]
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
@@ -121,6 +123,21 @@ async def manga(ctx):
       await ctx.message.delete()
     await ctx.send(embed = C.MangaUpdate())
     #Replt to {Prefix}manga
+
+@bot.command()
+async def autodelmessage(ctx,arg):
+  msg = ""
+  if arg in Yeah:
+    DelMsg = True
+    msg = "Auto Delete Command Message is On"
+  elif arg in Nah:
+    DelMsg = False
+    msg = "Auto Delete Command Message is Off"
+  else:
+    msg = "Invaild Input!\n`$autodelmessage <True/False>`"
+  if DelMsg == True:
+    await ctx.message.delete()
+    await ctx.send(msg)
 
 import os
 
