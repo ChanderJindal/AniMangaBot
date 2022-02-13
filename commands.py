@@ -6,7 +6,6 @@ import discord
 def EpisodeUpdate():
     try:
         EpNumber , AniMixLink , GogoLink = AM.Anime()
-        EpNumber = EpNumber.split()[1]
         embedVar = discord.Embed(title="ww1.gogoanime2.org's Anime Update", description=f'**Episode#{EpNumber} is available!**', color=5763719)#Green
         embedVar.add_field(name="GogoAnime Link", value=f'{GogoLink}', inline=False)
         embedVar.add_field(name="AniMicPlay Link", value=f'{AniMixLink}', inline=False)

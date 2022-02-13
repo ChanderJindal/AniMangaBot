@@ -32,23 +32,27 @@ def Anime():#This is main one - 3 outputs
   Latest_Ep = List_Items[-1]
   #the most recent one
 
-  Link_Part_2 = Latest_Ep.a["href"]
+  partial_link = Latest_Ep.a["href"]
   #it only carries the later half 
+  #Format -> '/watch/detective-conan/1037'
+  #I saw an issue with it on site, so i am changing it
 
-  Link_Part_1 = "https://ww1.gogoanime2.org"
+  Ep_Number = partial_link.split('/')[-1]
+
+  Link_base = "https://ww1.gogoanime2.org/watch/detective-conan/"
   #This is given
 
-  GogoLink = Link_Part_1 + Link_Part_2
+  GogoLink = Link_base + str(Ep_Number)
 
-  Ep_Number = Latest_Ep.find('div',class_ = "name").text
+  #  Ep_Number = Latest_Ep.find('div',class_ = "name").text
   #this returns like 'EP 201'
 
-  Last_Episode_file_Update(Ep_Number.split()[1])
+  Last_Episode_file_Update(Ep_Number)
 
-  #EP_Type = Latest_Ep.find('div',class_="cate").text
+  #  EP_Type = Latest_Ep.find('div',class_="cate").text
   #to see if it's 'DUB' or 'SUB'
 
-  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/' + str(Ep_Number).lower().replace(" ","")
+  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/ep' + str(Ep_Number)
 
   #statement = f'{Ep_Number}  {EP_Type}\nThis Episode is Available on\n{AniMixPlay_Link}\n{GogoLink}'
 
