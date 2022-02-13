@@ -138,7 +138,7 @@ async def autodelmessage(ctx,arg):
     msg = "Invaild Input!\n`$autodelmessage <True/False>`"
   if DelMsg == True:
     await ctx.message.delete()
-    await ctx.send(msg)
+  await ctx.send(msg)
 
 import os
 
