@@ -14,12 +14,13 @@ async def foo(ctx, arg):
 Anime_Channel = 736777686596190208
 Manga_Channel = 736776933014110338
 test_channel = 829814770453839895
-DelMsg = True
 Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",True,1,'enable', 'on']
 Nah = ["n","no","f","false",False,0,'disable', 'off']
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
+
+bot.DelMsg = True
 
 
 '''
@@ -83,7 +84,7 @@ async def on_ready():
 @bot.command()
 async def test(ctx): #this is just to see if the IF CONDITION is working
   channel = bot.get_channel(test_channel)
-  if DelMsg == True:
+  if bot.DelMsg == True:
     await ctx.message.delete()
   await channel.send("This command is here.")
   AVal = C.LatestAnimeEpisode()
@@ -93,34 +94,34 @@ async def test(ctx): #this is just to see if the IF CONDITION is working
 
 @bot.command()
 async def prefix(ctx):
-  if DelMsg == True:
+  if bot.DelMsg == True:
     await ctx.message.delete()
   await ctx.send('$')
 
 @bot.command()
 async def hello(ctx):
-    if DelMsg == True:
+    if bot.DelMsg == True:
       await ctx.message.delete()
     await ctx.send(f'Hello!  {ctx.author.mention}')
     #reply to the {Prefix}Hello
   
 @bot.command()
 async def echo(ctx, *, arg):
-    if DelMsg == True:
+    if bot.DelMsg == True:
       await ctx.message.delete()
     await ctx.send(arg)
     #Reply to {Prefix}echo arguments, returns the arguments
 
 @bot.command()
 async def anime(ctx):
-    if DelMsg == True:
+    if bot.DelMsg == True:
       await ctx.message.delete()
     await ctx.send(embed = C.EpisodeUpdate())
     #Reply to {Prefix}anime
 
 @bot.command()
 async def manga(ctx):
-    if DelMsg == True:
+    if bot.DelMsg == True:
       await ctx.message.delete()
     await ctx.send(embed = C.MangaUpdate())
     #Replt to {Prefix}manga
@@ -129,18 +130,18 @@ async def manga(ctx):
 async def autodelmessage(ctx,arg):
   arg = arg.lower()
   msg = ""
-  temp = DelMsg
+  #temp = bot.DelMsg
   if arg in Yeah:
-    temp = True
+    bot.DelMsg = True
     msg = "Auto Delete Command Message is On"
   elif arg in Nah:
-    temp = False
-    msg = "Auto Delete Command Message is Off"
+    bot.DelMsg = False
+    #msg = "Auto Delete Command Message is Off"
   else:
     msg = "Invaild Input!\n`$autodelmessage <True/False>`"
-  if temp == True:
+  if bot.DelMsg == True:
     await ctx.message.delete()
-  DelMsg = temp
+  #bot.DelMsg = temp
   await ctx.send(msg)
 
 import os
