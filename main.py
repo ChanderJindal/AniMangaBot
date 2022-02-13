@@ -128,7 +128,7 @@ async def manga(ctx):
 async def autodelmessage(ctx,arg):
   arg = arg.lower()
   msg = ""
-  temp = True
+  temp = DelMsg
   if arg in Yeah:
     temp = True
     msg = "Auto Delete Command Message is On"
