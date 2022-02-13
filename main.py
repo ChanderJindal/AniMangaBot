@@ -129,16 +129,15 @@ async def manga(ctx):
 @bot.command()
 async def autodelmessage(ctx,arg):
   arg = arg.lower()
-  msg = ""
+  msg = "Invaild Input!\n`$autodelmessage <True/False>`"
   #temp = bot.DelMsg
   if arg in Yeah:
     bot.DelMsg = True
     msg = "Auto Delete Command Message is On"
   elif arg in Nah:
     bot.DelMsg = False
-    #msg = "Auto Delete Command Message is Off"
-  else:
-    msg = "Invaild Input!\n`$autodelmessage <True/False>`"
+    msg = "Auto Delete Command Message is Off"
+    
   if bot.DelMsg == True:
     await ctx.message.delete()
   #bot.DelMsg = temp
