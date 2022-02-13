@@ -32,10 +32,14 @@ async def tester():
       await channel.send(embed=Val)
     await channel.send("This command is not here.")
 '''
-
-async def AutoUpdates():
+AVal = 0
+MVal = 0
+async def AniMangaNumber():
   AVal = C.LatestAnimeEpisode()
   MVal = C.LatestMangaChapter()
+  return
+
+async def AutoUpdates():
   while True:
     Val = C.EpisodeUpdate() #New way to check, get the regular message
     EmbedDict = Val.to_dict()
@@ -56,6 +60,7 @@ async def AutoUpdates():
           await channel.send(embed=Val)
 
 async def schedule_daily_message():
+  AniMangaNumber()
   AutoUpdates()
   await asyncio.sleep(3600) #sleeps for 1 hr
 
