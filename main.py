@@ -40,29 +40,29 @@ async def AniMangaNumber():
   return
 
 async def AutoUpdates():
-  while True:
-    Val = C.EpisodeUpdate() #New way to check, get the regular message
-    EmbedDict = Val.to_dict()
-    if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
-      Cval = C.GetAnimeEpisodeNumber(EmbedDict["description"])
-      if Cval > AVal:
-        AVal = Cval
-        channel = bot.get_channel(Anime_Channel)
-        await channel.send(embed=Val)
+  Val = C.EpisodeUpdate() #New way to check, get the regular message
+  EmbedDict = Val.to_dict()
+  if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
+    Cval = C.GetAnimeEpisodeNumber(EmbedDict["description"])
+    if Cval > AVal:
+      AVal = Cval
+      channel = bot.get_channel(Anime_Channel)
+      await channel.send(embed=Val)
 
-    Val = C.MangaUpdate()#same as above but for manga
-    EmbedDict = Val.to_dict()
-    if EmbedDict["title"] != "Error!": 
-      Cval = C.GetMangaChapterNumber(EmbedDict["description"])
-      if Cval > MVal:
-          MVal = Cval
-          channel = bot.get_channel(Manga_Channel)
-          await channel.send(embed=Val)
+  Val = C.MangaUpdate()#same as above but for manga
+  EmbedDict = Val.to_dict()
+  if EmbedDict["title"] != "Error!": 
+    Cval = C.GetMangaChapterNumber(EmbedDict["description"])
+    if Cval > MVal:
+        MVal = Cval
+        channel = bot.get_channel(Manga_Channel)
+        await channel.send(embed=Val)
 
 async def schedule_daily_message():
   AniMangaNumber()
-  AutoUpdates()
-  await asyncio.sleep(3600) #sleeps for 1 hr
+  while True:
+    AutoUpdates()
+    await asyncio.sleep(3600) #sleeps for 1 hr
 
 @bot.event
 async def on_ready():
