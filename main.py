@@ -21,6 +21,7 @@ Nah = ["n","no","f","false",False,0,'disable', 'off']
 bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
 
+
 '''
 async def tester():
   while True:
