@@ -14,6 +14,7 @@ async def foo(ctx, arg):
 Anime_Channel = 736777686596190208
 Manga_Channel = 736776933014110338
 test_channel = 829814770453839895
+DelMsg = True
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
@@ -64,6 +65,7 @@ async def schedule_daily_message():
   MVal = C.LatestMangaChapter()
   await AutoUpdates(AVal,MVal)
 
+
 @bot.event
 async def on_ready():
     print('We can begin the Crafting as {0.user}'.format(bot))
@@ -78,6 +80,8 @@ async def on_ready():
 @bot.command()
 async def test(ctx): #this is just to see if the IF CONDITION is working
   channel = bot.get_channel(test_channel)
+  if DelMsg == True:
+    await ctx.message.delete()
   await channel.send("This command is here.")
   AVal = C.LatestAnimeEpisode()
   MVal = C.LatestMangaChapter()
@@ -86,25 +90,35 @@ async def test(ctx): #this is just to see if the IF CONDITION is working
 
 @bot.command()
 async def prefix(ctx):
+  if DelMsg == True:
+    await ctx.message.delete()
   await ctx.send('$')
 
 @bot.command()
 async def hello(ctx):
+    if DelMsg == True:
+      await ctx.message.delete()
     await ctx.send(f'Hello!  {ctx.author.mention}')
     #reply to the {Prefix}Hello
   
 @bot.command()
 async def echo(ctx, *, arg):
+    if DelMsg == True:
+      await ctx.message.delete()
     await ctx.send(arg)
     #Reply to {Prefix}echo arguments, returns the arguments
 
 @bot.command()
 async def anime(ctx):
+    if DelMsg == True:
+      await ctx.message.delete()
     await ctx.send(embed = C.EpisodeUpdate())
     #Reply to {Prefix}anime
 
 @bot.command()
 async def manga(ctx):
+    if DelMsg == True:
+      await ctx.message.delete()
     await ctx.send(embed = C.MangaUpdate())
     #Replt to {Prefix}manga
 
