@@ -38,7 +38,7 @@ async def tester():
     await channel.send("This command is not here.")
 '''
 
-async def AutoUpdates(AVal,MVal,flag = TRUE):
+async def AutoUpdates(AVal,MVal,flag = True):
   while flag == True:
     Val = C.EpisodeUpdate() #New way to check, get the regular message
     EmbedDict = Val.to_dict()
