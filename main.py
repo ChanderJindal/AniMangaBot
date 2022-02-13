@@ -1,4 +1,3 @@
-from pickle import TRUE
 import discord
 import commands as C
 from discord.ext import commands
@@ -75,7 +74,6 @@ async def on_ready():
 
     bot.DelMsg = True
     #For the Auto Delete messages
-
     await schedule_daily_message()
     #PS- Only 1 such function can work here at a time, as this function was never complete anything below it wouldn't work
     #to trigger the schedule above
@@ -138,6 +136,7 @@ async def autodelmessage(ctx,arg):
   elif arg in Nah:
     bot.DelMsg = False
     msg = "Auto Delete Command Message is Off"
+
   if bot.DelMsg == True:
     await ctx.message.delete()
   #bot.DelMsg = temp
