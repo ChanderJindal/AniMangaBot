@@ -35,10 +35,7 @@ async def tester():
     await channel.send("This command is not here.")
 '''
 
-AVal = 0
-MVal = 0
-
-async def AutoUpdates():
+async def AutoUpdates(AVal,MVal):
   Val = C.EpisodeUpdate() #New way to check, get the regular message
   EmbedDict = Val.to_dict()
   if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
@@ -80,7 +77,9 @@ async def on_ready():
 async def test(ctx): #this is just to see if the IF CONDITION is working
   channel = bot.get_channel(test_channel)
   await channel.send("This command is here.")
-  await AutoUpdates()
+  AVal = C.LatestAnimeEpisode()
+  MVal = C.LatestMangaChapter()
+  await AutoUpdates(AVal,MVal)
   await channel.send("This command is not here.") 
 
 @bot.command()
