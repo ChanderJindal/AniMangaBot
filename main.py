@@ -37,9 +37,6 @@ async def tester():
 
 AVal = 0
 MVal = 0
-async def AniMangaNumber():
-  AVal = C.LatestAnimeEpisode()
-  MVal = C.LatestMangaChapter()
 
 async def AutoUpdates():
   Val = C.EpisodeUpdate() #New way to check, get the regular message
@@ -61,7 +58,8 @@ async def AutoUpdates():
         await channel.send(embed=Val)
 
 async def schedule_daily_message():
-  AniMangaNumber()
+  AVal = C.LatestAnimeEpisode()
+  MVal = C.LatestMangaChapter()
   while True:
     await AutoUpdates()
     await asyncio.sleep(3600) 
