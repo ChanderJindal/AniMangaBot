@@ -58,7 +58,7 @@ async def schedule_daily_message():
   AVal = C.LatestAnimeEpisode()
   MVal = C.LatestMangaChapter()
   while True:
-    await AutoUpdates()
+    await AutoUpdates(AVal,MVal)
     await asyncio.sleep(3600) 
     #sleeps for 1 hr
 
