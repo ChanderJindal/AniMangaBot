@@ -40,7 +40,6 @@ MVal = 0
 async def AniMangaNumber():
   AVal = C.LatestAnimeEpisode()
   MVal = C.LatestMangaChapter()
-  return
 
 async def AutoUpdates():
   Val = C.EpisodeUpdate() #New way to check, get the regular message
