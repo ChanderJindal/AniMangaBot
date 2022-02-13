@@ -32,19 +32,31 @@ async def tester():
       await channel.send(embed=Val)
     await channel.send("This command is not here.")
 '''
+
+
 async def schedule_daily_message():
+  AVal = C.LatestAnimeEpisode()
+  MVal = C.LatestMangaChapter()
   while True:
+    Val = C.EpisodeUpdate() #New way to check, get the regular message
+    EmbedDict = Val.to_dict()
+    if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
+      Cval = C.GetAnimeEpisodeNumber(EmbedDict["description"])
+      if Cval > AVal:
+        AVal = Cval
+        channel = bot.get_channel(Anime_Channel)
+        await channel.send(embed=Val)
+
+    Val = C.MangaUpdate()#same as above but for manga
+    EmbedDict = Val.to_dict()
+    if EmbedDict["title"] != "Error!": 
+      Cval = C.GetMangaChapterNumber(EmbedDict["description"])
+      if Cval > MVal:
+          MVal = Cval
+          channel = bot.get_channel(Manga_Channel)
+          await channel.send(embed=Val)
+
     await asyncio.sleep(3600) #sleeps for 1 hr
-
-    Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
-    if Val != False:#if anything but False then pass
-      channel = bot.get_channel(Anime_Channel)
-      await channel.send(embed=Val)
-
-    Val = C.Manga_Update_Check()#same as above but for manga
-    if Val != False:
-      channel = bot.get_channel(Manga_Channel)
-      await channel.send(embed=Val)
 
 @bot.event
 async def on_ready():

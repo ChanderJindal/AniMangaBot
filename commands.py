@@ -50,63 +50,30 @@ def MangaUpdate(flag = False):
             return embedVar
         #return f'The bot is unable to search any Links for Detecctive Conan Mangas, pls have a look at back end.'
 
-##################################### Anime & Manga Update Check #####################################
-#Yes, it's commands form above, copy-pasted just with a check of Ep/Ch number
-##################################### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #####################################
 
-def Manga_Update_Check(flag = True):
-    f = open("Last_Chapter.txt","r")
-    CurrCh = f.read()
-    f.close()
-    try:
-        Chapter , MangaDexLink = AM.Manga()
-        if Chapter == CurrCh:
-            return False
-        embedVar = discord.Embed(title="MangaDex.org's Manga Update", description=f'**Chapter#{Chapter} is available!**', footer = "Auto-Updates", color=5763719)#Green
-        embedVar.add_field(name="MangaDex Link", value=f'{MangaDexLink}', inline=False)
-        return embedVar
-    except:
-        try:
-            Chapter , Link = AM.Manga_Backup()
-            if Chapter == CurrCh:
-                return False
-            embedVar = discord.Embed(title="readdetectiveconanarc.com's Manga Update", description=f'**Chapter#{Chapter} is available!**', footer = "Auto-Updates", color=16705372)#Yellow
-            embedVar.add_field(name="MangaDex Link", value=f'{Link}', inline=False)
-            return embedVar
-        except:
-            if (flag == False):
-                AM.MangaDex_Anime_ID_update()
-                AM.Last_Chapter_Update()
-                return Manga_Update_Check(True)
-            embedVar = discord.Embed(title="Error!", description=f'**Bot is Unable to Detect any Detective Conan Manga!\nLook at the back-end.**', footer = "Auto-Updates", color=15548997)#Red
-            return embedVar
+###################################################### Helper Functions #####################################################
 
-def Anime_Update_Check():
+def LatestAnimeEpisode():
     f = open("Last_Episode.txt","r")
-    CurrEp = f.read()
+    val =  f.read()
     f.close()
-    try:
-        EpNumber , AniMixLink , GogoLink = AM.Anime()
-        EpNumber = EpNumber.split()[1]
-        if str(EpNumber).strip() == str(CurrEp).strip():
-            return False
-        embedVar = discord.Embed(title="ww1.gogoanime2.org's Anime Update", description=f'**Episode#{EpNumber} is available!**', footer = "Auto-Updates", color=5763719)#Green
-        embedVar.add_field(name="GogoAnime Link", value=f'{GogoLink}', inline=False)
-        embedVar.add_field(name="AniMicPlay Link", value=f'{AniMixLink}', inline=False)
-        
-        return embedVar
-    except:
-        try:
-            EpisodeNumber, EpisodeName, AniMixLink, GogoLink = AM.AnimeBackup()
-            if str(EpisodeNumber).strip() == str(CurrEp).strip():
-                return False
-            embedVar = discord.Embed(title="myanimelist.net's Anime Update", description=f'**Episode#{EpisodeNumber} - {EpisodeName} is available!**', footer = "Auto-Updates", color=16705372)#Yellow
-            embedVar.add_field(name="GogoAnime Link", value=f'{GogoLink}', inline=False)
-            embedVar.add_field(name="AniMicPlay Link", value=f'{AniMixLink}', inline=False)
-            return embedVar
-        except:
-            embedVar = discord.Embed(title="Error!", description=f'**Bot is Unable to Detect any Detective Conan Episodes!\nLook at the back-end.**', footer = "Auto-Updates", color=15548997)#Red
-            return embedVar
+    return int(val)
+
+def LatestMangaChapter():
+    f = open("Last_Chapter.txt","r")
+    val = f.read()
+    f.close()
+    return int(val)
+
+def GetAnimeEpisodeNumber(MyStr):
+    lst = MyStr.split(" ")
+    MyStr = lst[0][len("**Episode#"):]
+    return int(MyStr)
+
+def GetMangaChapterNumber(MyStr):
+    lst = MyStr.split(" ")
+    MyStr = lst[0][len("**Chapter#"):]
+    return int(MyStr)
 
 
     
