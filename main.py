@@ -1,4 +1,3 @@
-from unicodedata import name
 import discord
 import commands as C
 from discord.ext import commands
@@ -88,6 +87,8 @@ async def on_message(message):
     #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
     #PS:- message.author can give you a ton of info about the message and author
     await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
+  else:
+    await bot.process_commands(message)
 
 @bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
 async def SetPrefix(ctx,arg):
