@@ -1,3 +1,4 @@
+from unicodedata import name
 import discord
 import commands as C
 from discord.ext import commands
@@ -66,6 +67,13 @@ async def schedule_daily_message():
   MVal = C.LatestMangaChapter()
   await AutoUpdates(AVal,MVal)
 
+@bot.event
+async def on_message(message):#Ping reply
+  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+    #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
+    #PS:- message.author can give you a ton of info about the message and author
+    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
+    message.author['bot'] == False
 
 @bot.event
 async def on_ready():
@@ -79,6 +87,7 @@ async def on_ready():
     #to trigger the schedule above
 
     #await tester()
+
 
 @bot.command()
 async def test(ctx): #this is just to see if the IF CONDITION is working
@@ -97,7 +106,7 @@ async def prefix(ctx):
     await ctx.message.delete()
   await ctx.send('$')
 
-@bot.command()
+@bot.command(name='hello',aliases=['hey','hola'])
 async def hello(ctx):
     if bot.DelMsg == True:
       await ctx.message.delete()
@@ -111,21 +120,21 @@ async def echo(ctx, *, arg):
     await ctx.send(arg)
     #Reply to {Prefix}echo arguments, returns the arguments
 
-@bot.command()
+@bot.command(name='anime',aliases=['A'])
 async def anime(ctx):
     if bot.DelMsg == True:
       await ctx.message.delete()
     await ctx.send(embed = C.EpisodeUpdate())
     #Reply to {Prefix}anime
 
-@bot.command()
+@bot.command(name='manga',aliases=['M'])
 async def manga(ctx):
     if bot.DelMsg == True:
       await ctx.message.delete()
     await ctx.send(embed = C.MangaUpdate())
     #Replt to {Prefix}manga
 
-@bot.command()
+@bot.command(name = 'autodelmessage',aliases = ['ADM'] )
 async def autodelmessage(ctx,arg):
   arg = arg.lower()
   msg = "Invaild Input!\n`$autodelmessage <True/False>`"
