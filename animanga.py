@@ -13,50 +13,34 @@ def Last_Episode_file_Update(Ep):
 
 def Anime():#This is main one - 3 outputs
   #Site_Link = "https://myanimelist.net/anime/235/Detective_Conan/episode" #- slow updates 
-  Site_Link = "https://ww1.gogoanime2.org/anime/detective-conan"
+  Site_Link = "https://gogoanime.film/category/detective-conan"
   Base_Soup = Get_Soup(Site_Link)
   #Initial Page
 
-  Lower_Half = Base_Soup.find('div',class_ = "anime_video_body")
-  #Getting the Lower Half
+  Main_div = Base_Soup.find('div',class_ = "anime_video_body")
+  #This is lower half o page
 
-  Grid_Ep = Lower_Half.find('div',id = "load_ep")
-  #Picked the Grid
+  Sub_div = Main_div.find_all('li')[-1]
+  #This containts the Last range of ep
+  #Format 1000-1037 , 1037 being the last ep at that time
 
-  List_Ep = Grid_Ep.find('ul', id = "episode_related" )
-  # got the unordered list of all the ep ASC
+  EpNumber = Sub_div.a['ep_end']
+  #This is the end of range marker
 
-  List_Items = List_Ep.find_all('li')
-  #Turned the previous list of CSS into my list
+  Link_base = "https://gogoanime.film/detective-conan-episode-"
+  #just add ep number at end, just in case of decimals need to add a dash
 
-  Latest_Ep = List_Items[-1]
-  #the most recent one
+  GogoLink = Link_base + EpNumber.replace(".","-")
+  #Incase of decimal
 
-  partial_link = Latest_Ep.a["href"]
-  #it only carries the later half 
-  #Format -> '/watch/detective-conan/1037'
-  #I saw an issue with it on site, so i am changing it
 
-  Ep_Number = partial_link.split('/')[-1]
+  Last_Episode_file_Update(EpNumber)
 
-  Link_base = "https://ww1.gogoanime2.org/watch/detective-conan/"
-  #This is given
+  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/ep' + EpNumber
 
-  GogoLink = Link_base + str(Ep_Number)
+  #statement = f'{EpNumber}  {EP_Type}\nThis Episode is Available on\n{AniMixPlay_Link}\n{GogoLink}'
 
-  #  Ep_Number = Latest_Ep.find('div',class_ = "name").text
-  #this returns like 'EP 201'
-
-  Last_Episode_file_Update(Ep_Number)
-
-  #  EP_Type = Latest_Ep.find('div',class_="cate").text
-  #to see if it's 'DUB' or 'SUB'
-
-  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/ep' + str(Ep_Number)
-
-  #statement = f'{Ep_Number}  {EP_Type}\nThis Episode is Available on\n{AniMixPlay_Link}\n{GogoLink}'
-
-  return Ep_Number , AniMixPlay_Link , GogoLink
+  return EpNumber , AniMixPlay_Link , GogoLink
   #f'''
   #New Episode #{EpisodeNumber} :- {EpisodeName}
   #Link:- {AniMix_Link}
@@ -86,7 +70,7 @@ def AnimeBackup():
   EpisodeNumber = LatestEp["href"].split('/')[-1]
 
   AniMix_Link = "https://animixplay.to/v1/detective-conan/ep" + str(EpisodeNumber)
-  Gogo_Link = "https://ww1.gogoanime2.org/watch/detective-conan/" + str(EpisodeNumber)
+  Gogo_Link = "https://gogoanime.film/detective-conan-episode-" + str(EpisodeNumber)
   #print(f'''
   #New Episode #{EpisodeNumber} :- {EpisodeName}
   #Link:- {AniMix_Link}

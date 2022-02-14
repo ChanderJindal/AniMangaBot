@@ -17,9 +17,6 @@ test_channel = 829814770453839895
 Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",True,1,'enable', 'on']
 Nah = ["n","no","f","false",False,0,'disable', 'off']
 
-bot = commands.Bot(command_prefix='$', case_insensitive=True)
-#This is to check prefix, yes prefix can be changed using file system
-
 
 '''
 async def tester():
@@ -67,13 +64,8 @@ async def schedule_daily_message():
   MVal = C.LatestMangaChapter()
   await AutoUpdates(AVal,MVal)
 
-@bot.event
-async def on_message(message):#Ping reply
-  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
-    #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
-    #PS:- message.author can give you a ton of info about the message and author
-    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
-    message.author['bot'] == False
+bot = commands.Bot(command_prefix='$', case_insensitive=True)
+#This is to check prefix, yes prefix can be changed using file system
 
 @bot.event
 async def on_ready():
@@ -82,12 +74,28 @@ async def on_ready():
 
     bot.DelMsg = True
     #For the Auto Delete messages
+
+    bot.prefix = '$'
     await schedule_daily_message()
     #PS- Only 1 such function can work here at a time, as this function was never complete anything below it wouldn't work
     #to trigger the schedule above
 
     #await tester()
 
+@bot.event#ping reply
+async def on_message(message):
+  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+    #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
+    #PS:- message.author can give you a ton of info about the message and author
+    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
+
+@bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
+async def SetPrefix(ctx,arg):
+  temp = bot.DelMsg
+  bot = commands.Bot(command_prefix=arg, case_insensitive=True)
+  bot.prefix = arg
+  bot.DelMsg = temp
+  ctx.send(f'The New Prefix is {bot.prefix}')
 
 @bot.command()
 async def test(ctx): #this is just to see if the IF CONDITION is working
