@@ -174,7 +174,7 @@ async def MakeEM(ctx):
   except:
       description_message = f"*{ctx.author}*'s Description."
   try:
-    ctx.send("Pick a colour for the message.\n`blue`, `blurple`, `dark_blue`, `dark_gold`, `dark_gray`, `dark_green`, `dark_grey`, `dark_magenta`, `dark_orange`, `dark_purple`, `dark_red`, `dark_teal`, `dark_theme`, `darker_gray`,  `darker_grey`, `gold`, `green`, `greyple`, `light_gray`, `light_grey`, `lighter_gray`, `lighter_grey`, `magenta`, `orange`, `purple`, `red`, `teal`.\nOr Enter the Int Value Code.")
+    await ctx.send("Pick a colour for the message.\n`blue`, `blurple`, `dark_blue`, `dark_gold`, `dark_gray`, `dark_green`, `dark_grey`, `dark_magenta`, `dark_orange`, `dark_purple`, `dark_red`, `dark_teal`, `dark_theme`, `darker_gray`,  `darker_grey`, `gold`, `green`, `greyple`, `light_gray`, `light_grey`, `lighter_gray`, `lighter_grey`, `magenta`, `orange`, `purple`, `red`, `teal`.\nOr Enter the Int Value Code.")
     color_message = await bot.wait_for('message', timeout=10.0)
     IntVal = discord.Colour.random
     try:
