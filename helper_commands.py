@@ -1,0 +1,31 @@
+def GetColour(argument):
+    switcher = {
+    "blue" : "Colour.blue",
+    "blurple" : "Colour.blurple",
+    "dark_blue" : "Colour.dark_blue",
+    "dark_gold" : "Colour.dark_gold",
+    "dark_gray" : "Colour.dark_gray",
+    "dark_green" : "Colour.dark_green",
+    "dark_grey" : "Colour.dark_grey",
+    "dark_magenta" : "Colour.dark_magenta",
+    "dark_orange" : "Colour.dark_orange",
+    "dark_purple" : "Colour.dark_purple",
+    "dark_red" : "Colour.dark_red",
+    "dark_teal" : "Colour.dark_teal",
+    "dark_theme" : "Colour.dark_theme",
+    "darker_gray" : "Colour.darker_gray",
+    "darker_grey" : "Colour.darker_grey",
+    "gold" : "Colour.gold",
+    "green" : "Colour.green",
+    "greyple" : "Colour.greyple",
+    "light_gray" : "Colour.light_gray",
+    "light_grey" : "Colour.light_grey",
+    "lighter_gray" : "Colour.lighter_gray",
+    "lighter_grey" : "Colour.lighter_grey",
+    "magenta" : "Colour.magenta",
+    "orange" : "Colour.orange",
+    "purple" : "Colour.purple",
+    "red" : "Colour.red",
+    "teal" : "Colour.teal"
+    }
+    return switcher.get(argument)
