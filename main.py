@@ -185,6 +185,7 @@ async def MakeEM(ctx):
         IntVal = hp.GetColour(color_message.context[0])
       except:
         pass
+    print(IntVal)
     color_message = IntVal
   except:
     color_message = discord.Colour.random
