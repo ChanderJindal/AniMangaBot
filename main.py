@@ -1,3 +1,4 @@
+from time import sleep
 import discord
 import commands as C
 from discord.ext import commands
@@ -168,11 +169,13 @@ async def MakeEM(ctx):
     title_message = await bot.wait_for('message', timeout=10.0)
   except:
     title_message = f"__{ctx.author}'s Message__"
+  sleep(10)
   try:
     await ctx.send("Enter Description of the EmbededMessage.")
     description_message = await bot.wait_for('message', timeout=10.0)
   except:
       description_message = f"*{ctx.author}*'s Description."
+  sleep(10)
   try:
     await ctx.send("Pick a colour for the message.\n`blue`, `blurple`, `dark_blue`, `dark_gold`, `dark_gray`, `dark_green`, `dark_grey`, `dark_magenta`, `dark_orange`, `dark_purple`, `dark_red`, `dark_teal`, `dark_theme`, `darker_gray`,  `darker_grey`, `gold`, `green`, `greyple`, `light_gray`, `light_grey`, `lighter_gray`, `lighter_grey`, `magenta`, `orange`, `purple`, `red`, `teal`.\nOr Enter the Int Value Code.")
     color_message = await bot.wait_for('message', timeout=10.0)
@@ -185,7 +188,6 @@ async def MakeEM(ctx):
         IntVal = hp.GetColour(color_message.context[0])
       except:
         pass
-    print(IntVal)
     color_message = IntVal
   except:
     color_message = discord.Colour.random
