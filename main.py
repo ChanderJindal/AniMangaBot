@@ -171,7 +171,6 @@ async def MakeEM(ctx):
   try:
     await ctx.send("Enter Description of the EmbededMessage.")
     description_message = await bot.wait_for('message', timeout=10.0)
-    await ctx.send("Enter colour code of the EmbededMessage.")
   except:
       description_message = f"*{ctx.author}*'s Description."
   try:
@@ -189,7 +188,7 @@ async def MakeEM(ctx):
   except:
     color_message = discord.Colour.random
   
-  EmbedVar = discord.Embed(title=title_message.content,description=description_message.content,colour=int(color_message.content))
+  EmbedVar = discord.Embed(title=str(title_message),description=str(description_message),colour=int(str(color_message)))
 
   await ctx.send(embed=EmbedVar)
 
