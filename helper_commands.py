@@ -1,7 +1,8 @@
+from email.mime import base
 import discord
 def GetColour(argument):
     switcher = {
-    "blue" : discord.colour.Colour.blue()(),
+    "blue" : discord.colour.Colour.blue(),
     "blurple" : discord.colour.Colour.blurple(),
     "dark_blue" : discord.colour.Colour.dark_blue(),
     "dark_gold" : discord.colour.Colour.dark_gold(),
@@ -27,11 +28,22 @@ def GetColour(argument):
     "orange" : discord.colour.Colour.orange(),
     "purple" : discord.colour.Colour.purple(),
     "red" : discord.colour.Colour.red(),
-    "teal" : discord.colour.Colour.teal()
+    "teal" : discord.colour.Colour.teal(),
     }
-    return int(switcher.get(argument),base=16)
+    val = switcher.get(argument)
+    print(type(val))
+    print(val)
+    ##if val.startswith("0x")
+    #return int(switcher.get(argument),base=16)
+    string = str(val)[1:]
+
+    print(string)
+    print( int(string,16))
+    #print( int(string,0))
 def testing():
-    return discord.colour.Colour.random
+    return int(discord.colour.Colour.random(),base=16)
 
 if __name__ == "__main__":
+    GetColour("teal")
     print(discord.Colour.teal())
+    #print(int(discord.Colour.teal(),base=10))
