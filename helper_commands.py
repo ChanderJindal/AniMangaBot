@@ -31,19 +31,19 @@ def GetColour(argument):
     "teal" : discord.colour.Colour.teal(),
     }
     val = switcher.get(argument)
-    print(type(val))
-    print(val)
+    #print(type(val))
+    #print(val)
     ##if val.startswith("0x")
     #return int(switcher.get(argument),base=16)
     string = str(val)[1:]
-
-    print(string)
-    print( int(string,16))
+    return int(string,16)
+    #print(string)
+    #print( int(string,16))
     #print( int(string,0))
 def testing():
     return int(discord.colour.Colour.random(),base=16)
 
 if __name__ == "__main__":
-    GetColour("teal")
+    print(GetColour("teal"))
     print(discord.Colour.teal())
     #print(int(discord.Colour.teal(),base=10))

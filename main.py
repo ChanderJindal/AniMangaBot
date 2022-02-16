@@ -179,23 +179,25 @@ async def MakeEM(ctx):
   try:
     await ctx.send("Pick a colour for the message.\n`blue`, `blurple`, `dark_blue`, `dark_gold`, `dark_gray`, `dark_green`, `dark_grey`, `dark_magenta`, `dark_orange`, `dark_purple`, `dark_red`, `dark_teal`, `dark_theme`, `darker_gray`,  `darker_grey`, `gold`, `green`, `greyple`, `light_gray`, `light_grey`, `lighter_gray`, `lighter_grey`, `magenta`, `orange`, `purple`, `red`, `teal`.\nOr Enter the Int Value Code.")
     color_message = await bot.wait_for('message', timeout=10.0)
-    IntVal = int(discord.colour.Colour.random(),base=16)
+    IntVal = int( str(discord.colour.Colour.random())[1:],base=16)#removing the #
     #'discord.colour.Colour'
     try:
+      #in case of int
       IntVal = int(color_message.context)
     except:
       #in case of Hex
       try:
-        IntVal = int(color_message.context,base=16)
+        IntVal = int(str(color_message.context)[1:],base=16)
       except:
-        pass
-      try: 
-        IntVal = hp.GetColour(color_message.context[0])
-      except:
-        pass
+        #type a color from list sent
+        try: 
+          IntVal = hp.GetColour(color_message.context[0])
+        except:
+          pass
     color_message = IntVal
   except:
-    color_message = discord.Colour.random
+    #if no message
+    color_message = int( str(discord.colour.Colour.random())[1:],base=16)
   
   EmbedVar = discord.Embed(title=str(title_message),description=str(description_message),colour=int(str(color_message)))
 
