@@ -184,6 +184,11 @@ async def MakeEM(ctx):
     try:
       IntVal = int(color_message.context)
     except:
+      #in case of Hex
+      try:
+        IntVal = int(color_message.context,base=16)
+      except:
+        pass
       try: 
         IntVal = hp.GetColour(color_message.context[0])
       except:

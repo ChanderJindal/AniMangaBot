@@ -29,7 +29,7 @@ def GetColour(argument):
     "red" : discord.colour.Colour.red(),
     "teal" : discord.colour.Colour.teal()
     }
-    return switcher.get(argument)
+    return int(switcher.get(argument),base=16)
 def testing():
     return discord.colour.Colour.random
 
