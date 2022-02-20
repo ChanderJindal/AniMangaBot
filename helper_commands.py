@@ -65,74 +65,74 @@ def TranslateEmbed(Mymsg):
             url_ = None
             video_ = None
 
-        try:
-            title_ = goslate.Goslate().translate(msg.title, 'en')
-        except:
-            pass
-        try:
-            author_ = goslate.Goslate().translate(msg.author, 'en')
-        except:
-            pass
-        try:
-            colour_ = msg.colour
-        except:
-            pass
-        try:
-            description_ = goslate.Goslate().translate(msg.description, 'en')
-        except:
-            pass
-        try:
-            fields_ = goslate.Goslate().translate(msg.fields, 'en')
-        except:
-            pass
-        try:
-            footer_ = goslate.Goslate().translate(msg.footer, 'en')
-        except:
-            pass
-        try:
-            image_ = msg.image
-        except:
-            pass
-        try:
-            provider_ = goslate.Goslate().translate(msg.provider, 'en')
-        except:
-            pass
-        try:
-            thumbnail_ = msg.thumbnail
-        except:
-            pass
-        try:
-            timestamp_ = msg.timestamp
-        except:
-            pass
-        try:
-            type_ = msg.type
-        except:
-            pass
-        try:
-            url_ = msg.url
-        except:
-            pass
-        try:
-            video_ = msg.video
-        except:
-            pass
+            try:
+                title_ = goslate.Goslate().translate(msg.title, 'en')
+            except:
+                pass
+            try:
+                author_ = goslate.Goslate().translate(msg.author, 'en')
+            except:
+                pass
+            try:
+                colour_ = msg.colour
+            except:
+                pass
+            try:
+                description_ = goslate.Goslate().translate(msg.description, 'en')
+            except:
+                pass
+            try:
+                fields_ = goslate.Goslate().translate(msg.fields, 'en')
+            except:
+                pass
+            try:
+                footer_ = goslate.Goslate().translate(msg.footer, 'en')
+            except:
+                pass
+            try:
+                image_ = msg.image
+            except:
+                pass
+            try:
+                provider_ = goslate.Goslate().translate(msg.provider, 'en')
+            except:
+                pass
+            try:
+                thumbnail_ = msg.thumbnail
+            except:
+                pass
+            try:
+                timestamp_ = msg.timestamp
+            except:
+                pass
+            try:
+                type_ = msg.type
+            except:
+                pass
+            try:
+                url_ = msg.url
+            except:
+                pass
+            try:
+                video_ = msg.video
+            except:
+                pass
 
-        EmbedVar = discord.Embed(title = title_, 
-        author = author_,
-        colour = colour_,
-        description = description_,
-        fields = fields_,
-        footer = footer_,
-        image = image_,
-        provider = provider_,
-        thumbnail = thumbnail_,
-        timestamp = timestamp_,
-        type = type_,
-        url = url_,
-        video = video_)
+            EmbedVar = discord.Embed(title = title_, 
+            author = author_,
+            colour = colour_,
+            description = description_,
+            fields = fields_,
+            footer = footer_,
+            image = image_,
+            provider = provider_,
+            thumbnail = thumbnail_,
+            timestamp = timestamp_,
+            type = type_,
+            url = url_,
+            video = video_)
 
-        Answer.append(EmbedVar)
+            Answer.append(EmbedVar)
     return Answer
 
 def Translate(msg,to_lang = 'en'):
