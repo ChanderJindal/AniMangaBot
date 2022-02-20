@@ -206,11 +206,101 @@ async def MakeEM(ctx):
 @bot.command()
 async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     msg = await channel.fetch_message(msgID)
+    '''
     await ctx.send(msg.embeds[0].description)
     await ctx.send(msg.embeds)
+    '''
+
+#############################################################
+    title_ = None
+    author_ = None
+    colour_ = None
+    description_ = None
+    fields_ = None
+    footer_ = None
+    image_ = None
+    provider_ = None
+    thumbnail_ = None
+    timestamp_ = None
+    type_ = None
+    url_ = None
+    video_ = None
+    import goslate
+    try:
+        title_ = goslate.Goslate().translate(msg.title, 'en')
+    except:
+        pass
+    try:
+        author_ = goslate.Goslate().translate(msg.author, 'en')
+    except:
+        pass
+    try:
+        colour_ = msg.colour
+    except:
+        pass
+    try:
+        description_ = goslate.Goslate().translate(msg.description, 'en')
+    except:
+        pass
+    try:
+        fields_ = goslate.Goslate().translate(msg.fields, 'en')
+    except:
+        pass
+    try:
+        footer_ = goslate.Goslate().translate(msg.footer, 'en')
+    except:
+        pass
+    try:
+        image_ = msg.image
+    except:
+        pass
+    try:
+        provider_ = goslate.Goslate().translate(msg.provider, 'en')
+    except:
+        pass
+    try:
+        thumbnail_ = msg.thumbnail
+    except:
+        pass
+    try:
+        timestamp_ = msg.timestamp
+    except:
+        pass
+    try:
+        type_ = msg.type
+    except:
+        pass
+    try:
+        url_ = msg.url
+    except:
+        pass
+    try:
+        video_ = msg.video
+    except:
+        pass
+
+    EmbedVar = discord.Embed(title = title_, 
+    author = author_,
+    colour = colour_,
+    description = description_,
+    fields = fields_,
+    footer = footer_,
+    image = image_,
+    provider = provider_,
+    thumbnail = thumbnail_,
+    timestamp = timestamp_,
+    type = type_,
+    url = url_,
+    video = video_)
+
+    await ctx.send(embed=EmbedVar)
+
+#############################################################
+'''
     EmbedVar = hp.TranslateEmbed(msg)
     for i in range(len(EmbedVar)):
       await ctx.send(embed=EmbedVar[i])
+'''
 
 import os
 
