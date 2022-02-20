@@ -4,7 +4,6 @@ import commands as C
 from discord.ext import commands
 import asyncio
 import helper_commands as hp
-import goslate
 
 '''
 New Base!
@@ -207,17 +206,10 @@ async def MakeEM(ctx):
 @bot.command()
 async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     msg = await channel.fetch_message(msgID)
-    await ctx.send(msg.embeds[0].description)
-    await ctx.send(goslate.Goslate().translate(msg.embeds[0].description, 'en'))
-    await ctx.send(msg.embeds[0].title)
-    await ctx.send(goslate.Goslate().translate(msg.embeds[0].title, 'en'))
 
-    #await ctx.send(msg.embeds[0].description)
-    
-    #embeds = msg.embeds 
-    #for embed in embeds:
-        #await ctx.send(embed.to_dict()) 
-##Extra here
+    EmbedVar = hp.TranslateEmbed(msg)
+
+    await ctx.send(embed=EmbedVar)
 
 import os
 

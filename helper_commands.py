@@ -1,5 +1,6 @@
-from email.mime import base
 import discord
+import goslate
+
 def GetColour(argument):
     switcher = {
     "blue" : discord.colour.Colour.blue(),
@@ -42,6 +43,97 @@ def GetColour(argument):
     #print( int(string,0))
 def testing():
     return int(discord.colour.Colour.random(),base=16)
+
+def TranslateEmbed(msg):
+    if type(msg) == "<class 'discord.embeds.Embed'>":
+      title_ = None
+      author_ = None
+      colour_ = None
+      description_ = None
+      fields_ = None
+      footer_ = None
+      image_ = None
+      provider_ = None
+      thumbnail_ = None
+      timestamp_ = None
+      type_ = None
+      url_ = None
+      video_ = None
+
+      MsgDict = msg.to_dict()
+
+      try:
+        title_ = goslate.Goslate().translate(MsgDict["title"], 'en')
+      except:
+        pass
+      try:
+        author_ = goslate.Goslate().translate(MsgDict["author"], 'en')
+      except:
+        pass
+      try:
+        colour_ = MsgDict["colour"]
+      except:
+        pass
+      try:
+        description_ = goslate.Goslate().translate(MsgDict["description"], 'en')
+      except:
+        pass
+      try:
+        fields_ = goslate.Goslate().translate(MsgDict["fields"], 'en')
+      except:
+        pass
+      try:
+        footer_ = goslate.Goslate().translate(MsgDict["footer"], 'en')
+      except:
+        pass
+      try:
+        image_ = MsgDict["image"]
+      except:
+        pass
+      try:
+        provider_ = goslate.Goslate().translate(MsgDict["provider"], 'en')
+      except:
+        pass
+      try:
+        thumbnail_ = MsgDict["thumbnail"]
+      except:
+        pass
+      try:
+        timestamp_ = MsgDict["timestamp"]
+      except:
+        pass
+      try:
+        type_ = MsgDict["type"]
+      except:
+        pass
+      try:
+        url_ = MsgDict["url"]
+      except:
+        pass
+      try:
+        video_ = MsgDict["video"]
+      except:
+        pass
+
+      EmbedVar = discord.Embed(title = title_, 
+      author = author_,
+      colour = colour_,
+      description = description_,
+      fields = fields_,
+      footer = footer_,
+      image = image_,
+      provider = provider_,
+      thumbnail = thumbnail_,
+      timestamp = timestamp_,
+      type = type_,
+      url = url_,
+      video = video_)
+
+      return EmbedVar
+
+def Translate(msg,to_lang = 'en'):
+    return goslate.Goslate().translate(msg, to_lang)
+
 
 if __name__ == "__main__":
     print(GetColour("teal"))
