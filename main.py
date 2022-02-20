@@ -235,9 +235,9 @@ async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     except:
         pass
     try:
-        colour_ = msg.colour
+        colour_ = int(msg.colour)
     except:
-        pass
+        colour_ = int(discord.colour.Colour.random(),base=16)
     try:
         description_ = goslate.Goslate().translate(msg.description, 'en')
     except:
