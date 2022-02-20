@@ -122,6 +122,23 @@ def Last_Chapter_Update():
   Last_Chapter_file_Update(Chapter)
   return Chapter
 
+def GroupUploader(json_data):
+  if len(json_data['data'][0]["relationships"]) == 3:
+    Group_ID = json_data['data'][0]["relationships"][0]["id"]
+    Group_link = f'https://api.mangadex.org/group/{Group_ID}'
+    Group_data = r.get(Group_link).json()
+    GroupName = "Not Found"
+    if Group_data["result"] == "ok":
+      GroupName = Group_data["data"]["attributes"]["name"]
+    Uploader_Id = json_data['data'][0]['relationships'][2]['id']
+    Uploader_Link = f'https://api.mangadex.org/user/{Uploader_Id}'
+    Uploader_data = r.get(Uploader_Link).json()
+    UploaderName = "Not Found"
+    if Uploader_data["result"] == "ok":
+      UploaderName = Uploader_data["data"]["attributes"]["username"]
+
+    return GroupName , UploaderName
+
 def Manga():# For MangaDex 
   Chapter = 1087
   try:#If we got the Last_Chapter Number good, otherwise call the function above and make API call and get it
@@ -144,6 +161,8 @@ def Manga():# For MangaDex
   
   Manga_ID = ""
   #print(Anime_ID,Chapter)
+  GroupName = ""
+  UploaderName = ""
   try:
   #Got the one for the newest expected Chapter
     link = f'https://api.mangadex.org/chapter?manga={Anime_ID}&chapter={str(Chapter)}&translatedLanguage[]=en'
@@ -152,6 +171,7 @@ def Manga():# For MangaDex
     json_data = response.json()
     #print(link)
     Manga_ID = json_data['data'][0]['id']
+    GroupName , UploaderName = GroupUploader(json_data=json_data)
 
     Last_Chapter_file_Update(Chapter=str(Chapter))
     #Since now it's Chapter + 1
@@ -166,7 +186,7 @@ def Manga():# For MangaDex
       #print(link)
     #Since last chapter update function sent me this detail, this chapter exists for sure
       Manga_ID = json_data['data'][0]['id']
-
+      GroupName , UploaderName = GroupUploader(json_data=json_data)
   
   #^This is the main Thing!
 
@@ -174,7 +194,7 @@ def Manga():# For MangaDex
 
   Final_Link = f'https://mangadex.org/chapter/{Manga_ID}/{PageNumber}'
   
-  return str(Chapter) , Final_Link
+  return str(Chapter) , Final_Link , GroupName , UploaderName
 
 def Manga_Backup():
   Site_Link = "https://www.readdetectiveconanarc.com/"
