@@ -196,6 +196,17 @@ def Manga():# For MangaDex
   
   return str(Chapter) , Final_Link , GroupName , UploaderName
 
+def AllPages(MangaID):#To be used to Read the Manga Not implemented yet
+    BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"
+    json_data = r.get(BaseLink).json()
+    if json_data["result"] != "ok":
+        return json_data["result"]
+    Link = json_data["baseUrl"]+"/data/"+json_data["chapter"]["hash"]+"/"
+    ImageLst = json_data["chapter"]["data"]
+    for i in ImageLst:
+        print(Link,i,sep="")
+    return "Done"
+
 def Manga_Backup():
   Site_Link = "https://www.readdetectiveconanarc.com/"
 
