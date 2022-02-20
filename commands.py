@@ -50,7 +50,7 @@ def MangaUpdate(flag = False):
         #return f'The bot is unable to search any Links for Detecctive Conan Mangas, pls have a look at back end.'
 
 
-###################################################### Helper Functions #####################################################
+##################################################### Helper Functions #####################################################
 
 def LatestAnimeEpisode():
     f = open("Last_Episode.txt","r")
