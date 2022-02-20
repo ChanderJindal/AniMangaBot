@@ -93,6 +93,25 @@ async def on_message(message):
   else:
     await bot.process_commands(message)
 
+@bot.event
+async def AutoTranslate(message):
+  if message.author.bot and message.channel.name == "twitter": #<- this is #twitter channel of server
+    embeds = message.embeds #rest is same as {getmsg}
+    for e in embeds:
+      var = e.to_dict()
+      try:
+        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+      except:pass
+      try:
+        var["author"]["name"] = hp.Translate(var["author"]["name"])
+      except:pass
+      try:
+        var["description"] = hp.Translate(var["description"])
+      except:pass
+      await message.channel.send(embed=discord.Embed.from_dict(var))
+  else:
+      await bot.process_commands(message)#to process on this command further,
+
 @bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
 async def SetPrefix(ctx,arg):
   temp = bot.DelMsg
@@ -236,24 +255,6 @@ async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
   embeds = msg.embeds 
   for e in embeds:
     await ctx.send(e.to_dict())
-
-@bot.event() 
-async def AutoTranslate(message):
-  if message.author.bot and message.channel.name != "twitter": #<- this is #twitter channel of server
-    await bot.process_commands(message)#to process on this command further, incase more commands are added under it
-  embeds = message.embeds #rest is same as {getmsg}
-  for e in embeds:
-    var = e.to_dict()
-    try:
-      var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-    except:pass
-    try:
-      var["author"]["name"] = hp.Translate(var["author"]["name"])
-    except:pass
-    try:
-      var["description"] = hp.Translate(var["description"])
-    except:pass
-    await message.channel.send(embed=discord.Embed.from_dict(var))
 
 
 import os
