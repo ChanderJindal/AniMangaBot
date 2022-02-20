@@ -45,6 +45,8 @@ def testing():
     return int(discord.colour.Colour.random(),base=16)
 
 def TranslateEmbed(Mymsg):
+    if type(Mymsg) != list():
+        Mymsg =[Mymsg]
     Answer = []
     for i in range(len(Mymsg)):
         msg = Mymsg[i]
