@@ -208,9 +208,9 @@ async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     msg = await channel.fetch_message(msgID)
     await ctx.send(msg.embeds[0].description)
     await ctx.send(msg.embeds)
-    EmbedVar = hp.TranslateEmbed(msg.embeds[0])
-
-    await ctx.send(embed=EmbedVar)
+    EmbedVar = hp.TranslateEmbed(msg)
+    for i in range(len(EmbedVar)):
+      await ctx.send(embed=EmbedVar[i])
 
 import os
 
