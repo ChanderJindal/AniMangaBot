@@ -206,8 +206,9 @@ async def MakeEM(ctx):
 @bot.command()
 async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     msg = await channel.fetch_message(msgID)
-    await ctx.send(msg)
-    EmbedVar = hp.TranslateEmbed(msg.embeds)
+    await ctx.send(msg.embeds[0])
+    await ctx.send(msg.embeds)
+    EmbedVar = hp.TranslateEmbed(msg)
 
     await ctx.send(embed=EmbedVar)
 
