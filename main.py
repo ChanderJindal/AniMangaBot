@@ -211,9 +211,15 @@ async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     embeds = msg.embeds 
     for e in embeds:
       var = e.to_dict()
-      var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      var["author"]["name"] = hp.Translate(var["author"]["name"])
-      var["description"] = hp.Translate(var["description"])
+      try:
+        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+      except:pass
+      try:
+        var["author"]["name"] = hp.Translate(var["author"]["name"])
+      except:pass
+      try:
+        var["description"] = hp.Translate(var["description"])
+      except:pass
       await ctx.send(embed=discord.Embed.from_dict(var))
 
 import os
