@@ -4,7 +4,6 @@ import commands as C
 from discord.ext import commands
 import asyncio
 import helper_commands as hp
-import goslate
 
 
 '''
@@ -166,6 +165,7 @@ async def autodelmessage(ctx,arg):
 
 @bot.command()
 async def MakeEM(ctx):
+  #A try to make an embed message from user input in 3 steps, colour , title and content
   try:
     await ctx.send("Enter Title of the EmbededMessage.")
     title_message = await bot.wait_for('message', timeout=10.0)
@@ -180,6 +180,8 @@ async def MakeEM(ctx):
   sleep(10)
   try:
     await ctx.send("Pick a colour for the message.\n`blue`, `blurple`, `dark_blue`, `dark_gold`, `dark_gray`, `dark_green`, `dark_grey`, `dark_magenta`, `dark_orange`, `dark_purple`, `dark_red`, `dark_teal`, `dark_theme`, `darker_gray`,  `darker_grey`, `gold`, `green`, `greyple`, `light_gray`, `light_grey`, `lighter_gray`, `lighter_grey`, `magenta`, `orange`, `purple`, `red`, `teal`.\nOr Enter the Int Value Code.")
+    #Giving out the choices of color available
+
     color_message = await bot.wait_for('message', timeout=10.0)
     IntVal = int( str(discord.colour.Colour.random())[1:],base=16)#removing the #
     #'discord.colour.Colour'
@@ -204,16 +206,21 @@ async def MakeEM(ctx):
   EmbedVar = discord.Embed(title=str(title_message),description=str(description_message),colour=int(str(color_message)))
 
   await ctx.send(embed=EmbedVar)
-##Extra here
-@bot.command()
+
+
+@bot.command() #It takes in an embed message and translates it into english then returns it
 async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
-    msg = await channel.fetch_message(msgID)
-    embeds = msg.embeds 
+  #you need to specify the channel from where the message is picked <#Channel.id> format then, message ID, 
+  #PS:- The channel must be present in server
+    msg = await channel.fetch_message(msgID)#got the message
+    embeds = msg.embeds #embeded part
     for e in embeds:
-      var = e.to_dict()
-      try:
+      var = e.to_dict()# made it into a dict(), it's easier to process
+
+      #On test case these 3 were in jp / ja converted them to en
+      try:#use try block to see if it is present
         var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      except:pass
+      except:pass#if it's already in eng no need to change it, or if it can't it's better to give the original part, instead of nothing
       try:
         var["author"]["name"] = hp.Translate(var["author"]["name"])
       except:pass
@@ -223,12 +230,30 @@ async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
       await ctx.send(embed=discord.Embed.from_dict(var))
 
 @bot.command()#just for testing
+#this is same as {getmsg} but it only gives the dict() to see the stuff in message 
 async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
   msg = await channel.fetch_message(msgID)
   embeds = msg.embeds 
   for e in embeds:
     await ctx.send(e.to_dict())
 
+@bot.event() 
+async def AutoTranslate(message):
+  if message.author.bot and message.channel.name != "twitter": #<- this is #twitter channel of server
+    await bot.process_commands(message)#to process on this command further, incase more commands are added under it
+  embeds = message.embeds #rest is same as {getmsg}
+  for e in embeds:
+    var = e.to_dict()
+    try:
+      var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+    except:pass
+    try:
+      var["author"]["name"] = hp.Translate(var["author"]["name"])
+    except:pass
+    try:
+      var["description"] = hp.Translate(var["description"])
+    except:pass
+    await message.channel.send(embed=discord.Embed.from_dict(var))
 
 
 import os
