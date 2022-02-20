@@ -222,6 +222,15 @@ async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
       except:pass
       await ctx.send(embed=discord.Embed.from_dict(var))
 
+@bot.command()#just for testing
+async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
+  msg = await channel.fetch_message(msgID)
+  embeds = msg.embeds 
+  for e in embeds:
+    await ctx.send(e.to_dict())
+
+
+
 import os
 
 tk = os.environ['TOKEN']
