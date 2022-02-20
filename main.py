@@ -4,6 +4,7 @@ import commands as C
 from discord.ext import commands
 import asyncio
 import helper_commands as hp
+import datetime
 
 '''
 New Base!
@@ -265,7 +266,7 @@ async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
     try:
         timestamp_ = msg.timestamp
     except:
-        pass
+        timestamp_ = datetime.datetime.now()
     try:
         type_ = msg.type
     except:
