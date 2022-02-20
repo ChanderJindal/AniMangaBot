@@ -202,7 +202,16 @@ async def MakeEM(ctx):
   EmbedVar = discord.Embed(title=str(title_message),description=str(description_message),colour=int(str(color_message)))
 
   await ctx.send(embed=EmbedVar)
-
+##Extra here
+@bot.command()
+async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
+    msg = await channel.fetch_message(msgID)
+    await ctx.send(msg.embeds[0].description)
+    
+    embeds = msg.embeds 
+    for embed in embeds:
+        await ctx.send(embed.to_dict()) 
+##Extra here
 
 import os
 
