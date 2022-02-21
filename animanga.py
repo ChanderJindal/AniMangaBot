@@ -1,3 +1,4 @@
+from lib2to3.pytree import Base
 from bs4 import BeautifulSoup as BS
 import requests as r
 import json
@@ -85,8 +86,6 @@ def MangaDex_Anime_ID_update():#DC ->Detective Conan
   name = "detective conan"#this is just for the format
   name = name.replace(" ","-")
   Api_link = f'https://api.mangadex.org/manga?title={name}'
-
-
   json_data = r.get(Api_link).json()
   if len(json_data['data']) == 0:
     return False
@@ -163,6 +162,7 @@ def Manga():# For MangaDex
   #print(Anime_ID,Chapter)
   GroupName = ""
   UploaderName = ""
+  Name = ""
   try:
   #Got the one for the newest expected Chapter
     link = f'https://api.mangadex.org/chapter?manga={Anime_ID}&chapter={str(Chapter)}&translatedLanguage[]=en'
@@ -172,7 +172,7 @@ def Manga():# For MangaDex
     #print(link)
     Manga_ID = json_data['data'][0]['id']
     GroupName , UploaderName = GroupUploader(json_data=json_data)
-
+    Name = json_data['data'][0]['attributes']['title']
     Last_Chapter_file_Update(Chapter=str(Chapter))
     #Since now it's Chapter + 1
 
@@ -187,6 +187,7 @@ def Manga():# For MangaDex
     #Since last chapter update function sent me this detail, this chapter exists for sure
       Manga_ID = json_data['data'][0]['id']
       GroupName , UploaderName = GroupUploader(json_data=json_data)
+      Name = json_data['data'][0]['attributes']['title']
   
   #^This is the main Thing!
 
@@ -195,7 +196,7 @@ def Manga():# For MangaDex
   Final_Link = f'https://mangadex.org/chapter/{Manga_ID}/{PageNumber}'
   ImageLink = GetFrontPage(MangaID=Manga_ID)
   
-  return str(Chapter) , Final_Link , GroupName , UploaderName,ImageLink
+  return str(Chapter) , Final_Link , GroupName , UploaderName,ImageLink,Name
 
 def GetFrontPage(MangaID):
   BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"
@@ -205,6 +206,28 @@ def GetFrontPage(MangaID):
   Link = json_data["baseUrl"]+"/data/"+json_data["chapter"]["hash"]+"/"
   ImageLink = Link + json_data["chapter"]["data"][0]
   return ImageLink
+
+def GetCover(AnimeID):
+  BaseLink = f'https://api.mangadex.org/manga/{AnimeID}?includes[]=cover_art'
+  '''
+  In the link above, there is an API call to Mangadex.org
+  It say it's Specifying the Manga
+  Then it gives the MangaID
+  ?` is for those it doesn't know and needs
+  includes` lists them 1 at a time
+  []` is so an array ,as per the api call instructions, is returned
+  = cover_Art` is to compare it to the type 
+  &` it is used to pick more values, after this just repeat all from include till before
+  '''
+  json_data = r.get(BaseLink).json()
+  for i in range(0,len(json_data["data"]["relationships"])):
+    if json_data["data"]["relationships"][i]["type"] == "cover_art":
+      #print(AnimeID)
+      #print(json_data["data"]["relationships"][i]["attributes"]["fileName"])
+      CoverFileName = json_data["data"]["relationships"][i]["attributes"]["fileName"]
+      return f'https://uploads.mangadex.org/covers/{AnimeID}/{CoverFileName}.512.jpg'
+      #PS here ".256.jpg" and ".512.jpg" in end are formats, if not specified then it will give original work
+
 
 def AllPages(MangaID):#To be used to Read the Manga Not implemented yet
     BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"
