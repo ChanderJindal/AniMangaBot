@@ -193,8 +193,18 @@ def Manga():# For MangaDex
   PageNumber = 1 #This one is for sake of format only
 
   Final_Link = f'https://mangadex.org/chapter/{Manga_ID}/{PageNumber}'
+  ImageLink = GetFrontPage(MangaID=Manga_ID)
   
-  return str(Chapter) , Final_Link , GroupName , UploaderName
+  return str(Chapter) , Final_Link , GroupName , UploaderName,ImageLink
+
+def GetFrontPage(MangaID):
+  BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"
+  json_data = r.get(BaseLink).json()
+  if json_data["result"] != "ok":
+      return json_data["result"]
+  Link = json_data["baseUrl"]+"/data/"+json_data["chapter"]["hash"]+"/"
+  ImageLink = Link + json_data["chapter"]["data"][0]
+  return ImageLink
 
 def AllPages(MangaID):#To be used to Read the Manga Not implemented yet
     BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"

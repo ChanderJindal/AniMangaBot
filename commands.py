@@ -28,11 +28,12 @@ def EpisodeUpdate():
 def MangaUpdate(flag = False):
 
     try:
-        Chapter , MangaDexLink ,GroupName , UploaderName = AM.Manga()
+        Chapter , MangaDexLink ,GroupName , UploaderName, FrontPage = AM.Manga()
         embedVar = discord.Embed(title="MangaDex.org's Manga Update", description=f'**Chapter#{Chapter} is available!**', color=5763719)#Green
         embedVar.add_field(name="Group Name", value=f'{GroupName}', inline=True) #Group  & Uploader name are as per API Regulation
         embedVar.add_field(name="Uploader Name", value=f'{UploaderName}', inline=True)
         embedVar.add_field(name="MangaDex.org's Link", value=f'{MangaDexLink}', inline=False)
+        embedVar.set_image(url=FrontPage)
         return embedVar
         #return f'''MangaDex has got Chapter#{Chapter}. Read it at {MangaDexLink} '''
     except:
