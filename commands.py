@@ -33,7 +33,7 @@ def MangaUpdate(flag = False):
         embedVar.add_field(name="Group Name", value=f'{GroupName}', inline=True) #Group  & Uploader name are as per API Regulation
         embedVar.add_field(name="Uploader Name", value=f'{UploaderName}', inline=True)
         embedVar.add_field(name="MangaDex.org's Link", value=f'{MangaDexLink}', inline=False)
-        try:embedVar.set_image(url=f'|| FrontPage ||')
+        try:embedVar.set_image(url=FrontPage)
         except:
             AnimeID = ""
             try:
