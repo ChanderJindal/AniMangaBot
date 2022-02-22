@@ -86,7 +86,7 @@ async def on_ready():
 
 @bot.event#ping reply
 async def on_message(message):
-  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+  if bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
     #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
     #PS:- message.author can give you a ton of info about the message and author
     await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
