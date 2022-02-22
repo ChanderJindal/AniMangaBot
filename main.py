@@ -93,31 +93,33 @@ async def on_message(message):
   else:
     await bot.process_commands(message)
 
-@bot.event
-async def AutoTranslate(message):
-  if message.channel.id == 774934515817644043: #<- this is #twitter channel of server
-    embeds = message.embeds #rest is same as {getmsg}
-    for e in embeds:
-      var = e.to_dict()
-      try:
-        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      except:pass
-      try:
-        var["author"]["name"] = hp.Translate(var["author"]["name"])
-      except:pass
-      try:
-        var["description"] = hp.Translate(var["description"])
-      except:pass
-      await message.channel.send(embed=discord.Embed.from_dict(var))
-  else:
-      await bot.process_commands(message)#to process on this command further,
 
 @bot.event
 async def AutoTranslateTest(message):
   await message.channel.send("Here")
-  if message.channel.id == 829814770453839895: #<- this is #general channel of BCT
-    await message.channel.send(hp.Translate(message))
+  #if message.channel.id == 829814770453839895: #<- this is #general channel of BCT
+  await message.channel.send(hp.Translate(message))
+  #else:
+  await bot.process_commands(message)#to process on this command further,
+  '''
+  embeds = message.embeds #rest is same as {getmsg}
+  for e in embeds:
+    var = e.to_dict()
+    try:
+      var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+    except:pass
+    try:
+      var["author"]["name"] = hp.Translate(var["author"]["name"])
+    except:pass
+    try:
+      var["description"] = hp.Translate(var["description"])
+    except:pass
+    await message.channel.send(embed=discord.Embed.from_dict(var))
     '''
+
+@bot.event
+async def AutoTranslate(message):
+  if  message.author.bot == True and message.channel.id == 774934515817644043: #<- this is #twitter channel of server
     embeds = message.embeds #rest is same as {getmsg}
     for e in embeds:
       var = e.to_dict()
@@ -131,11 +133,8 @@ async def AutoTranslateTest(message):
         var["description"] = hp.Translate(var["description"])
       except:pass
       await message.channel.send(embed=discord.Embed.from_dict(var))
-      '''
   else:
       await bot.process_commands(message)#to process on this command further,
-
-
 
 @bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
 async def SetPrefix(ctx,arg):
