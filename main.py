@@ -86,7 +86,7 @@ async def on_ready():
 
 @bot.event#ping reply
 async def on_message(message):
-  if bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
     #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
     #PS:- message.author can give you a ton of info about the message and author
     await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
@@ -95,7 +95,7 @@ async def on_message(message):
 
 @bot.event
 async def AutoTranslate(message):
-  if message.author.bot == True and message.channel.id == 774934515817644043: #<- this is #twitter channel of server
+  if message.channel.id == 774934515817644043: #<- this is #twitter channel of server
     embeds = message.embeds #rest is same as {getmsg}
     for e in embeds:
       var = e.to_dict()
