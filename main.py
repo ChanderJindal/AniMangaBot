@@ -95,7 +95,7 @@ async def on_message(message):
 
 @bot.event
 async def AutoTranslate(message):
-  if message.author.bot and message.channel.id == 774934515817644043: #<- this is #twitter channel of server
+  if message.author.bot == True and message.channel.id == 774934515817644043: #<- this is #twitter channel of server
     embeds = message.embeds #rest is same as {getmsg}
     for e in embeds:
       var = e.to_dict()
@@ -114,7 +114,7 @@ async def AutoTranslate(message):
 # 829814770453839895
 @bot.event
 async def AutoTranslateTest(message):
-  if message.author.bot and message.channel.id == 829814770453839895: #<- this is #general channel of BCT
+  if message.author.bot == True and message.channel.id == 829814770453839895: #<- this is #general channel of BCT
     embeds = message.embeds #rest is same as {getmsg}
     for e in embeds:
       var = e.to_dict()
@@ -130,7 +130,7 @@ async def AutoTranslateTest(message):
       await message.channel.send(embed=discord.Embed.from_dict(var))
   else:
       await bot.process_commands(message)#to process on this command further,
-      
+
 @bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
 async def SetPrefix(ctx,arg):
   temp = bot.DelMsg
