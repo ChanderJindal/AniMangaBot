@@ -111,9 +111,10 @@ async def AutoTranslate(message):
       await message.channel.send(embed=discord.Embed.from_dict(var))
   else:
       await bot.process_commands(message)#to process on this command further,
-# 829814770453839895
+
 @bot.event
 async def AutoTranslateTest(message):
+  await message.channel.send("Here")
   if message.channel.id == 829814770453839895: #<- this is #general channel of BCT
     await message.channel.send(hp.Translate(message))
     '''
