@@ -93,15 +93,16 @@ async def on_message(message):
   else:
     await bot.process_commands(message)
 
-
+'''
 @bot.event
 #AutoTranslateTest
 async def on_message(message):
-  await message.channel.send("Here")
+  #await message.channel.send("Here")
   #if message.channel.id == 829814770453839895: #<- this is #general channel of BCT
   await message.channel.send(hp.Translate(message))
   #else:
   await bot.process_commands(message)#to process on this command further,
+  '''
   '''
   embeds = message.embeds #rest is same as {getmsg}
   for e in embeds:
