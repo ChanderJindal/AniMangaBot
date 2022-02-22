@@ -111,7 +111,26 @@ async def AutoTranslate(message):
       await message.channel.send(embed=discord.Embed.from_dict(var))
   else:
       await bot.process_commands(message)#to process on this command further,
-
+# 829814770453839895
+@bot.event
+async def AutoTranslateTest(message):
+  if message.author.bot and message.channel.id == 829814770453839895: #<- this is #general channel of BCT
+    embeds = message.embeds #rest is same as {getmsg}
+    for e in embeds:
+      var = e.to_dict()
+      try:
+        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+      except:pass
+      try:
+        var["author"]["name"] = hp.Translate(var["author"]["name"])
+      except:pass
+      try:
+        var["description"] = hp.Translate(var["description"])
+      except:pass
+      await message.channel.send(embed=discord.Embed.from_dict(var))
+  else:
+      await bot.process_commands(message)#to process on this command further,
+      
 @bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
 async def SetPrefix(ctx,arg):
   temp = bot.DelMsg
