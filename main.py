@@ -95,7 +95,7 @@ async def on_message(message):
 
 @bot.event
 async def AutoTranslate(message):
-  if message.author.bot and message.channel.name == "twitter": #<- this is #twitter channel of server
+  if message.author.bot and message.channel.id == 774934515817644043: #<- this is #twitter channel of server
     embeds = message.embeds #rest is same as {getmsg}
     for e in embeds:
       var = e.to_dict()
