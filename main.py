@@ -4,7 +4,7 @@ import commands as C
 from discord.ext import commands
 import asyncio
 import helper_commands as hp
-
+import goslate
 
 '''
 New Base!
@@ -93,31 +93,33 @@ async def on_message(message):
   else:
     await bot.process_commands(message)
 
-'''
 @bot.event
 #AutoTranslateTest
 async def on_message(message):
   #await message.channel.send("Here")
-  #if message.channel.id == 829814770453839895: #<- this is #general channel of BCT
-  await message.channel.send(hp.Translate(message))
-  #else:
-  await bot.process_commands(message)#to process on this command further,
+  if message.channel.id == 829814770453839895 and message.author != bot.user : #<- this is #general channel of BCT
+    await message.channel.send(message.content)
+    await message.channel.send("#1")
+    translated = goslate.Goslate().translate(message.content, 'en')
+    await message.channel.send(translated)
+    await message.channel.send("#2")
+  else:
+    await bot.process_commands(message)#to process on this command further,
+'''
+embeds = message.embeds #rest is same as {getmsg}
+for e in embeds:
+  var = e.to_dict()
+  try:
+    var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+  except:pass
+  try:
+    var["author"]["name"] = hp.Translate(var["author"]["name"])
+  except:pass
+  try:
+    var["description"] = hp.Translate(var["description"])
+  except:pass
+  await message.channel.send(embed=discord.Embed.from_dict(var))
   '''
-  '''
-  embeds = message.embeds #rest is same as {getmsg}
-  for e in embeds:
-    var = e.to_dict()
-    try:
-      var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-    except:pass
-    try:
-      var["author"]["name"] = hp.Translate(var["author"]["name"])
-    except:pass
-    try:
-      var["description"] = hp.Translate(var["description"])
-    except:pass
-    await message.channel.send(embed=discord.Embed.from_dict(var))
-    '''
 
 @bot.event
 async def AutoTranslate(message):
@@ -281,7 +283,6 @@ async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
   embeds = msg.embeds 
   for e in embeds:
     await ctx.send(e.to_dict())
-
 
 import os
 
