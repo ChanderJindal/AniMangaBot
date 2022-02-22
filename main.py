@@ -95,7 +95,8 @@ async def on_message(message):
 
 
 @bot.event
-async def AutoTranslateTest(message):
+#AutoTranslateTest
+async def on_message(message):
   await message.channel.send("Here")
   #if message.channel.id == 829814770453839895: #<- this is #general channel of BCT
   await message.channel.send(hp.Translate(message))
