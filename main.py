@@ -19,25 +19,6 @@ test_channel = 829814770453839895
 Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",True,1,'enable', 'on']
 Nah = ["n","no","f","false",False,0,'disable', 'off']
 
-
-'''
-async def tester():
-  while True:
-
-    await asyncio.sleep(30)
-
-    channel = bot.get_channel(test_channel)
-    await channel.send("This command is here.")
-    Val = C.Anime_Update_Check()#checks anime updates, it has all the info there
-    if Val != False:#if anything but False then pass
-      await channel.send(embed=Val)
-
-    Val = C.Manga_Update_Check()#same as above but for manga
-    if Val != False:
-      await channel.send(embed=Val)
-    await channel.send("This command is not here.")
-'''
-
 async def AutoUpdates(AVal,MVal,flag = True):
   while flag == True:
     Val = C.EpisodeUpdate() #New way to check, get the regular message
@@ -83,11 +64,12 @@ async def on_ready():
     #to trigger the schedule above
 
     #await tester()
-
+'''
 @bot.event#ping reply
 async def on_message(message):#Only on_message can take in Messages
   if message.author.bot == bot.user: #it's not from this bot itself
     return
+  await message.channel.send("message not from me")
   if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
     #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
     #PS:- message.author can give you a ton of info about the message and author
@@ -109,7 +91,8 @@ async def on_message(message):#Only on_message can take in Messages
       await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
   else:
     await bot.process_commands(message)#if none of above carry commands below
-
+'''
+'''
 @bot.event
 #AutoTranslateTest
 async def on_message(message):
@@ -122,6 +105,7 @@ async def on_message(message):
     await message.channel.send("#2")
   else:
     await bot.process_commands(message)#to process on this command further,
+'''
 '''
 embeds = message.embeds #rest is same as {getmsg}
 for e in embeds:
@@ -184,31 +168,32 @@ async def prefix(ctx):
 
 @bot.command(name='hello',aliases=['hey','hola'])
 async def hello(ctx):
-    if bot.DelMsg == True:
-      await ctx.message.delete()
-    await ctx.send(f'Hello!  {ctx.author.mention}')
-    #reply to the {Prefix}Hello
-  
+  if bot.DelMsg == True:
+    await ctx.message.delete()
+  await ctx.send(f'Hello!  {ctx.author.mention}')
+  #reply to the {Prefix}Hello
+
 @bot.command()
 async def echo(ctx, *, arg):
-    if bot.DelMsg == True:
-      await ctx.message.delete()
-    await ctx.send(arg)
-    #Reply to {Prefix}echo arguments, returns the arguments
+  if bot.DelMsg == True:
+    await ctx.message.delete()
+  await ctx.send(arg)
+  #Reply to {Prefix}echo arguments, returns the arguments
 
 @bot.command(name='anime',aliases=['A'])
 async def anime(ctx):
-    if bot.DelMsg == True:
-      await ctx.message.delete()
-    await ctx.send(embed = C.EpisodeUpdate())
-    #Reply to {Prefix}anime
+  if bot.DelMsg == True:
+    await ctx.message.delete()
+  await ctx.send(ctx.author)
+  await ctx.send(embed = C.EpisodeUpdate())
+  #Reply to {Prefix}anime
 
 @bot.command(name='manga',aliases=['M'])
 async def manga(ctx):
-    if bot.DelMsg == True:
-      await ctx.message.delete()
-    await ctx.send(embed = C.MangaUpdate())
-    #Replt to {Prefix}manga
+  if bot.DelMsg == True:
+    await ctx.message.delete()
+  await ctx.send(embed = C.MangaUpdate())
+  #Replt to {Prefix}manga
 
 @bot.command(name = 'autodelmessage',aliases = ['ADM'] )
 async def autodelmessage(ctx,arg):
@@ -271,27 +256,26 @@ async def MakeEM(ctx):
 
   await ctx.send(embed=EmbedVar)
 
-
 @bot.command() #It takes in an embed message and translates it into english then returns it
 async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
   #you need to specify the channel from where the message is picked <#Channel.id> format then, message ID, 
   #PS:- The channel must be present in server
-    msg = await channel.fetch_message(msgID)#got the message
-    embeds = msg.embeds #embeded part
-    for e in embeds:
-      var = e.to_dict()# made it into a dict(), it's easier to process
+  msg = await channel.fetch_message(msgID)#got the message
+  embeds = msg.embeds #embeded part
+  for e in embeds:
+    var = e.to_dict()# made it into a dict(), it's easier to process
 
-      #On test case these 3 were in jp / ja converted them to en
-      try:#use try block to see if it is present
-        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      except:pass#if it's already in eng no need to change it, or if it can't it's better to give the original part, instead of nothing
-      try:
-        var["author"]["name"] = hp.Translate(var["author"]["name"])
-      except:pass
-      try:
-        var["description"] = hp.Translate(var["description"])
-      except:pass
-      await ctx.send(embed=discord.Embed.from_dict(var))
+    #On test case these 3 were in jp / ja converted them to en
+    try:#use try block to see if it is present
+      var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+    except:pass#if it's already in eng no need to change it, or if it can't it's better to give the original part, instead of nothing
+    try:
+      var["author"]["name"] = hp.Translate(var["author"]["name"])
+    except:pass
+    try:
+      var["description"] = hp.Translate(var["description"])
+    except:pass
+    await ctx.send(embed=discord.Embed.from_dict(var))
 
 @bot.command()#just for testing
 #this is same as {getmsg} but it only gives the dict() to see the stuff in message 
@@ -300,6 +284,33 @@ async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
   embeds = msg.embeds 
   for e in embeds:
     await ctx.send(e.to_dict())
+
+
+@bot.event#ping reply
+async def on_message(message):#Only on_message can take in Messages
+  if message.author == bot.user: #it's not from this bot itself
+    return
+  #await message.channel.send("message not from me")
+  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+    #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
+    #PS:- message.author can give you a ton of info about the message and author
+    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
+    #Incase of ping
+  elif message.channel.id == 829814770453839895 and message.author.bot == True: #Tweet Translate
+    embeds = message.embeds #rest is same as {getmsg}
+    for e in embeds:
+      var = e.to_dict()#make embed to dict
+      try:#these 3 had text in jp in them, so if they are there then translate them
+        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+      except:pass
+      try:
+        var["author"]["name"] = hp.Translate(var["author"]["name"])
+      except:pass
+      try:
+        var["description"] = hp.Translate(var["description"])
+      except:pass
+      await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
+  #await bot.process_commands(message)#if none of above carry commands below
 
 import os
 
