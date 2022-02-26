@@ -4,7 +4,6 @@ import commands as C
 from discord.ext import commands
 import asyncio
 import helper_commands as hp
-import goslate
 
 '''
 New Base!
@@ -63,84 +62,7 @@ async def on_ready():
     #PS- Only 1 such function can work here at a time, as this function was never complete anything below it wouldn't work
     #to trigger the schedule above
 
-    #await tester()
-'''
-@bot.event#ping reply
-async def on_message(message):#Only on_message can take in Messages
-  if message.author.bot == bot.user: #it's not from this bot itself
-    return
-  await message.channel.send("message not from me")
-  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
-    #make sure the the message is not by any bot, bot is mentioned in message, and the length of message is same as ping length of message + '\n' the Enter/new line character
-    #PS:- message.author can give you a ton of info about the message and author
-    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
-    #Incase of ping
-  elif message.channel.id == 829814770453839895 and message.author.bot == True: #Tweet Translate
-    embeds = message.embeds #rest is same as {getmsg}
-    for e in embeds:
-      var = e.to_dict()#make embed to dict
-      try:#these 3 had text in jp in them, so if they are there then translate them
-        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      except:pass
-      try:
-        var["author"]["name"] = hp.Translate(var["author"]["name"])
-      except:pass
-      try:
-        var["description"] = hp.Translate(var["description"])
-      except:pass
-      await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
-  else:
-    await bot.process_commands(message)#if none of above carry commands below
-'''
-'''
-@bot.event
-#AutoTranslateTest
-async def on_message(message):
-  #await message.channel.send("Here")
-  if message.channel.id == 829814770453839895 and message.author != bot.user : #<- this is #general channel of BCT
-    await message.channel.send(message.content)
-    await message.channel.send("#1")
-    translated = goslate.Goslate().translate(message.content, 'en')
-    await message.channel.send(translated)
-    await message.channel.send("#2")
-  else:
-    await bot.process_commands(message)#to process on this command further,
-'''
-'''
-embeds = message.embeds #rest is same as {getmsg}
-for e in embeds:
-  var = e.to_dict()
-  try:
-    var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-  except:pass
-  try:
-    var["author"]["name"] = hp.Translate(var["author"]["name"])
-  except:pass
-  try:
-    var["description"] = hp.Translate(var["description"])
-  except:pass
-  await message.channel.send(embed=discord.Embed.from_dict(var))
-  '''
-'''
-@bot.event
-async def AutoTranslate(message):
-  if  message.author.bot == True and message.channel.id == 774934515817644043: #<- this is #twitter channel of server
-    embeds = message.embeds #rest is same as {getmsg}
-    for e in embeds:
-      var = e.to_dict()
-      try:
-        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      except:pass
-      try:
-        var["author"]["name"] = hp.Translate(var["author"]["name"])
-      except:pass
-      try:
-        var["description"] = hp.Translate(var["description"])
-      except:pass
-      await message.channel.send(embed=discord.Embed.from_dict(var))
-  else:
-      await bot.process_commands(message)#to process on this command further,
-  '''
+
 @bot.command(name='SetPrefix',aliases=['changePrefix','NewPrefix'])
 async def SetPrefix(ctx,arg):
   temp = bot.DelMsg
