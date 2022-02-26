@@ -67,6 +67,31 @@ async def autodelmessage(ctx,arg):
   #bot.DelMsg = temp
   await ctx.send(msg)
 
+@bot.command() #It takes in an embed message and translates it into english then returns it
+async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
+  #you need to specify the channel from where the message is picked <#Channel.id> format then, message ID, 
+  #PS:- The channel must be present in server
+  msg = await channel.fetch_message(msgID)#got the message
+  embeds = msg.embeds #embeded part
+  for e in embeds:
+    var = e.to_dict()# made it into a dict()
+
+    try:var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+    except:pass
+    try:var["author"]["name"] = hp.Translate(var["author"]["name"])
+    except:pass
+    try:var["description"] = hp.Translate(var["description"])
+    except:pass
+    await ctx.send(embed=discord.Embed.from_dict(var))
+
+@bot.command()#just for testing
+#this is same as {getmsg} but it only gives the dict() to see the stuff in message 
+async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
+  msg = await channel.fetch_message(msgID)
+  embeds = msg.embeds 
+  for e in embeds:
+    await ctx.send(e.to_dict())
+
 import os
 
 tk = os.environ['TOKEN']
