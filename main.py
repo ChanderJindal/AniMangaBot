@@ -5,8 +5,8 @@ from discord.ext import commands
 import asyncio
 import helper_commands as hp
 
-Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",1,'enable', 'on']
-Nah = ["n","no","f","false",0,'disable', 'off']
+Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",'enable', 'on']
+Nah = ["n","no","f","false",'disable', 'off']
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
@@ -17,6 +17,29 @@ async def on_ready():
     #this is what is shows when the bot is online
 
     bot.DelMsg = True
+
+@bot.event#ping reply
+async def on_message(message):#Only on_message can take in Messages
+  if message.author.bot == bot.user: #it's not from this bot itself
+    return
+  if message.channel.id == 829814770453839895 and message.author == 'MEE6#4876': #Tweet Translate
+    #Check that it's in Twitter Channel then, it's from MEE6
+    embeds = message.embeds #rest is same as {getmsg}
+    for e in embeds:
+      var = e.to_dict()#make embed to dict
+      try:#these 3 had text in jp in them, so if they are there then translate them
+        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+      except:pass
+      try:
+        var["author"]["name"] = hp.Translate(var["author"]["name"])
+      except:pass
+      try:
+        var["description"] = hp.Translate(var["description"])
+      except:pass
+      await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
+  else:
+    await bot.process_commands(message)#if none of above carry commands below
+
 '''
 @bot.event#ping reply
 async def on_message(message):
@@ -92,8 +115,14 @@ async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
   for e in embeds:
     await ctx.send(e.to_dict())
 
+@bot.command()#just for testing
+#this is same as {getmsg} but it only gives the dict() to see the stuff in message 
+async def chkauth(ctx, channel: discord.TextChannel, msgID: int):
+  msg = await channel.fetch_message(msgID)
+  await ctx.send(msg.author)
+
 import os
 
-tk = os.environ['TOKEN']
+tk = 'OTM4NDg3NDExODE2NjkzODQz.YfrAgw.Jic9wLLoiyzP1cQy0yBgKPPyZcI'#os.environ['TOKEN']
 
 bot.run(tk)

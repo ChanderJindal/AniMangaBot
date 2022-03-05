@@ -1,7 +1,5 @@
-from lib2to3.pytree import Base
 from bs4 import BeautifulSoup as BS
 import requests as r
-import json
 #Be sure to Install BeautifulSoup and lxml lib
 def Get_Soup(link):
   return BS( r.get(link).text, features="lxml")
@@ -268,11 +266,15 @@ def Manga_Backup():
 
 
 if __name__ == "__main__":
+  '''
   print("Here")
   print(Anime())
   print(MangaDex_Anime_ID_update())
   print("Here")
   print(Manga())
   print("Here")
-
+  '''
+  f = open("Anime_ID.txt","r")
+  print(GetCover(f.read()))
+  f.close()
   
