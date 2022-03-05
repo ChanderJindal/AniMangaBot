@@ -1,8 +1,6 @@
-from time import sleep
 import discord
 import commands as C
 from discord.ext import commands
-import asyncio
 import helper_commands as hp
 
 Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",'enable', 'on']
