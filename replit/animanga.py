@@ -1,228 +1,169 @@
-from bs4 import BeautifulSoup as BS
-import json
-import aiohttp
+import discord
+import commands as C
+from discord.ext import commands
+import helper_commands as hp
 import asyncio
 from replit import db
+import Keep_Alive
 
-db["Ep"] = 1037
-db["MangaDexAnimeID"] = "7f30dfc3-0b80-4dcc-a3b9-0cd746fac005"
-db["Chapter"] = 1088
+Anime_Channel = 736777686596190208
+Manga_Channel = 736776933014110338
+Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",'enable', 'on']
+Nah = ["n","no","f","false",'disable', 'off']
 
-async def Get_Soup( URL : str , format = "html" ):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(URL) as response:
-          if format == "json":
-            return json.loads(BS( await response.text(), features="lxml").text)
-          return BS( await response.text(), features="lxml")
+bot = commands.Bot(command_prefix='$', case_insensitive=True)
+#This is to check prefix, yes prefix can be changed using file system
 
-async def Anime():
-  Site_Link = "https://gogoanime.film/category/detective-conan"
-  Base_Soup = await Get_Soup(Site_Link)
+async def AutoUpdates():
+  Val = await C.EpisodeUpdate() #New way to check, get the regular message
+  EmbedDict = Val.to_dict()
+  if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
+    # and EmbedDict["description"] != f'**Episode#{db["Ep"]}'
+    desc = str(EmbedDict["description"])
+    desc = desc.split(" ")[0]
+    desc = desc.split("#")[-1]
+    if str(desc) != str(db["Ep"]): #make sure class type is same
+      channel = bot.get_channel(Anime_Channel)
+      await channel.send(embed=Val)
 
-  Main_div = Base_Soup.find('div',class_ = "anime_video_body")
-
-  Sub_div = Main_div.find_all('li')[-1]
-
-  EpNumber = Sub_div.a['ep_end']
-
-  Link_base = "https://gogoanime.film/detective-conan-episode-"
-
-  GogoLink = Link_base + EpNumber.replace(".","-")
-
-  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/ep{EpNumber}'
-
-  db["Ep"] = EpNumber
-
-  return EpNumber , AniMixPlay_Link , GogoLink
-
-
-async def AnimeBackup():
-  Site_Link = "https://myanimelist.net/anime/235/Detective_Conan/episode"
-
-  Base_Soup = await Get_Soup(Site_Link)
-
-  EpRange = Base_Soup.find('div', class_ = "pagination ac")
-
-  LatestOne = EpRange.find_all('a',class_ = "link")[-1]
-
-  Correct_Page_Link = LatestOne["href"]
-
-  Correct_Soup = await Get_Soup(Correct_Page_Link)
-
-  LatestEp = Correct_Soup.find_all('a', class_="fl-l fw-b")[-1]
-
-  EpisodeName = LatestEp.text
-  EpisodeNumber = LatestEp["href"].split('/')[-1]
-
-  AniMix_Link = f'https://animixplay.to/v1/detective-conan/ep{EpisodeNumber}'
-  Gogo_Link = f'https://gogoanime.film/detective-conan-episode-{EpisodeNumber}'
-
-  db["Ep"] = EpisodeNumber
-
-  return EpisodeNumber, EpisodeName ,AniMix_Link, Gogo_Link
-
-###########################################
-
-async def MangaDex_Anime_ID_update():
-  name = "detective-conan"
-  Api_link = f'https://api.mangadex.org/manga?title={name}'
-  json_data = await Get_Soup(Api_link,"json")
-  if len(json_data['data']) == 0:
-    return "Not Found!"
-  Anime_ID = ""
-  for i in range(0,10):
-    if json_data['data'][i]['attributes']['title']['en'] == "Detective Conan":
-      print(str(json_data['data'][i]['attributes']['title']['en']))
-      Anime_ID = json_data['data'][i]['id']
-      break
-
-  db["MangaDexAnimeID"] = Anime_ID
-  return Anime_ID
-
-async def Last_Chapter_Update():
-  Site_Link = "https://www.readdetectiveconanarc.com/"
-
-  soup = await Get_Soup(Site_Link)
-
-  Link = soup.find('a', class_ = "column has-text-centered button-last-chapter")
-  Link = str(Link["href"])
-  #I know it was initially a string, but it was in form of a slice, thus immutable
-  Link = Link[0:len(Link)-1]
-  Chapter = Link.split('-')[-1]
-  db["Chapter"] = Chapter
-  return Chapter
-
-async def GroupUploader(json_data):
-  if len(json_data['data'][0]["relationships"]) == 3:
-    Group_ID = json_data['data'][0]["relationships"][0]["id"]
-    Group_link = f'https://api.mangadex.org/group/{Group_ID}'
-    Group_data = await Get_Soup(Group_link,"json")
-    GroupName = "Not Found"
-    if Group_data["result"] == "ok":
-      GroupName = Group_data["data"]["attributes"]["name"]
-    Uploader_Id = json_data['data'][0]['relationships'][2]['id']
-    Uploader_Link = f'https://api.mangadex.org/user/{Uploader_Id}'
-    Uploader_data = await Get_Soup(Uploader_Link,"json")
-    UploaderName = "Not Found"
-    if Uploader_data["result"] == "ok":
-      UploaderName = Uploader_data["data"]["attributes"]["username"]
-
-    return GroupName , UploaderName
-
-async def Manga():# For MangaDex 
-  Chapter = db["Chapter"]
-
-  Chapter = int(Chapter) + 1 
-
-  Anime_ID = db["MangaDexAnimeID"]
-  
-  Manga_ID = ""
-  GroupName = ""
-  UploaderName = ""
-  Name = ""
-  try:
-
-    link = f'https://api.mangadex.org/chapter?manga={Anime_ID}&chapter={str(Chapter)}&translatedLanguage[]=en'
-
-    json_data = await Get_Soup(link,"json")
-    
-    Manga_ID = json_data['data'][0]['id']
-    GroupName , UploaderName = await GroupUploader(json_data=json_data)
-    Name = json_data['data'][0]['attributes']['title']
-    db["Chapter"] = Chapter
-
-  except:
-      Chapter = int(Chapter) - 1
-      link = f'https://api.mangadex.org/chapter?manga={Anime_ID}&chapter={str(Chapter)}&translatedLanguage[]=en'
-      json_data = await Get_Soup(link,"json")
-
-      Manga_ID = json_data['data'][0]['id']
-      GroupName , UploaderName = await GroupUploader(json_data=json_data)
-      Name = json_data['data'][0]['attributes']['title']
-  
-  PageNumber = 1 
-
-  Final_Link = f'https://mangadex.org/chapter/{Manga_ID}/{PageNumber}'
-  ImageLink = await GetFrontPage(MangaID=Manga_ID)
-  
-  return str(Chapter) , Final_Link , GroupName , UploaderName,ImageLink,Name
-
-async def GetFrontPage(MangaID):
-  BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"
-  json_data = await Get_Soup(BaseLink,"json")
-  if json_data["result"] != "ok":
-      return json_data["result"]
-  Link = json_data["baseUrl"]+"/data/"+json_data["chapter"]["hash"]+"/"
-  ImageLink = Link + json_data["chapter"]["data"][0]
-  return ImageLink
-
-async def GetCover(AnimeID):
-  BaseLink = f'https://api.mangadex.org/manga/{AnimeID}?includes[]=cover_art'
-
-  json_data = await Get_Soup(BaseLink,"json")
-  for i in range(0,len(json_data["data"]["relationships"])):
-    if json_data["data"]["relationships"][i]["type"] == "cover_art":
-      #print(AnimeID)
-      #print(json_data["data"]["relationships"][i]["attributes"]["fileName"])
-      CoverFileName = json_data["data"]["relationships"][i]["attributes"]["fileName"]
-      return f'https://uploads.mangadex.org/covers/{AnimeID}/{CoverFileName}.512.jpg'
-      #PS here ".256.jpg" and ".512.jpg" in end are formats, if not specified then it will give original work
+  Val = await C.MangaUpdate()#same as above but for manga
+  EmbedDict = Val.to_dict()
+  if EmbedDict["title"] != "Error!":
+    desc = str(EmbedDict["description"])
+    desc = desc.split(" ")[0]
+    desc = desc.split("#")[-1]
+    if str(desc) != str(db["Chapter"]):
+        channel = bot.get_channel(Manga_Channel)
+        await channel.send(embed=Val)
+  return 
 
 
-async def AllPages(MangaID):#To be used to Read the Manga Not implemented yet
-    BaseLink = f"https://api.mangadex.org/at-home/server/{MangaID}"
-    json_data = await Get_Soup(BaseLink,"json")
-    if json_data["result"] != "ok":
-        return json_data["result"]
-    Link = json_data["baseUrl"]+"/data/"+json_data["chapter"]["hash"]+"/"
-    ImageLst = json_data["chapter"]["data"]
-    for i in ImageLst:
-        print(Link,i,sep="")
-    return "Done"
+@bot.event
+async def on_ready():
+    print('We can begin the Crafting as {0.user}'.format(bot))
+    #this is what is shows when the bot is online
 
-async def Manga_Backup():
-  Site_Link = "https://www.readdetectiveconanarc.com/"
+    bot.DelMsg = True
+    while True:
+      await AutoUpdates()
+      await asyncio.sleep(3600)
+      #Sleep for 1 hr
 
-  soup = await Get_Soup(Site_Link)
+@bot.event#ping reply
+async def on_message(message):#Only on_message can take in Messages
+  if message.author.bot == bot.user: #it's not from this bot itself
+    return
+  if message.channel.id == 829814770453839895 and message.author == 'MEE6#4876': #Tweet Translate
+    #Check that it's in Twitter Channel then, it's from MEE6
+    embeds = message.embeds #rest is same as {getmsg}
+    for e in embeds:
+      var = e.to_dict()#make embed to dict
+      try:#these 3 had text in jp in them, so if they are there then translate them
+        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+      except:pass
+      try:
+        var["author"]["name"] = hp.Translate(var["author"]["name"])
+      except:pass
+      try:
+        var["description"] = hp.Translate(var["description"])
+      except:pass
+      await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
+  elif message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
+  else:
+    await bot.process_commands(message)#if none of above carry commands below
 
-  Link = soup.find('a', class_ = "column has-text-centered button-last-chapter")
-  Link = str(Link["href"])
-  #I know it was initially a string, but it was in form of a slice, thus immutable
-  Link = Link[0:len(Link)-1]
+@bot.command()
+async def testAU(ctx):
+  await ctx.send("The Command is here.")
+  await AutoUpdates()
+  await ctx.send("The Command is Not Here.")
 
-  Chapter = Link.split('-')[-1]
 
-  return Chapter , Link 
-  #f'''
-  #New Manga #{Chapter}
-  #Link:- {Link}
-  #{ImageLink}
-  #'''
+@bot.command()
+async def prefix(ctx):
+  if bot.DelMsg:await ctx.message.delete()
+  await ctx.send('$')
 
-if __name__ == "__main__":
-    a,b,c=asyncio.run(Anime())
-    print(a,b,c,sep='\n',end="\n#####\n")
-    a,b,c,d=asyncio.run(AnimeBackup())
-    print(a,b,c,d,sep='\n',end="\n#####\n")
-    a,b,c,d,e,f = asyncio.run(Manga())
-    print(a,b,c,d,e,f,sep='\n',end="\n#####\n")
-    a,b=asyncio.run(Manga_Backup())
-    print(a,b,sep='\n',end="\n#####\n")
+@bot.command(name='hello',aliases=['hey','hola','hi'])
+async def hello(ctx):
+  if bot.DelMsg:await ctx.message.delete()
+  await ctx.send(f'Hello!  {ctx.author.mention}')
+  #reply to the {Prefix}Hello
+
+@bot.command()
+async def echo(ctx, *, arg):
+  if bot.DelMsg:await ctx.message.delete()
+  await ctx.send(arg)
+
+@bot.command(name='anime',aliases=['A'])
+async def anime(ctx):
+  if bot.DelMsg:await ctx.message.delete()
+  await ctx.send(embed = (await C.EpisodeUpdate()))
+
+@bot.command(name='manga',aliases=['M'])
+async def manga(ctx):
+  if bot.DelMsg:await ctx.message.delete()
+  await ctx.send(embed =(await C.MangaUpdate()))
+
+@bot.command(name = 'autodelmessage',aliases = ['ADM'] )
+async def autodelmessage(ctx,arg):
+  arg = arg.lower()
+  msg = "Invaild Input!\n`$autodelmessage <True/False>`"
+  #temp = bot.DelMsg
+  if arg in Yeah:
+    bot.DelMsg = True
+    msg = "Auto Delete Command Message is On"
+  elif arg in Nah:
+    bot.DelMsg = False
+    msg = "Auto Delete Command Message is Off"
+
+  if bot.DelMsg == True:
+    await ctx.message.delete()
+  #bot.DelMsg = temp
+  await ctx.send(msg)
+
+@bot.command() #It takes in an embed message and translates it into english then returns it
+async def getmsg(ctx, channel: discord.TextChannel, msgID: int):
+  #you need to specify the channel from where the message is picked <#Channel.id> format then, message ID, 
+  #PS:- The channel must be present in server
+  msg = await channel.fetch_message(msgID)#got the message
+  embeds = msg.embeds #embeded part
+  for e in embeds:
+    var = e.to_dict()# made it into a dict()
+
+    try:var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+    except:pass
+    try:var["author"]["name"] = hp.Translate(var["author"]["name"])
+    except:pass
+    try:var["description"] = hp.Translate(var["description"])
+    except:pass
+    await ctx.send(embed=discord.Embed.from_dict(var))
+
+@bot.command()#just for testing
+#this is same as {getmsg} but it only gives the dict() to see the stuff in message 
+async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
+  msg = await channel.fetch_message(msgID)
+  embeds = msg.embeds 
+  for e in embeds:
+    await ctx.send(e.to_dict())
+
+@bot.command()#just for testing
+#this is same as {getmsg} but it only gives the dict() to see the stuff in message 
+async def chkauth(ctx, channel: discord.TextChannel, msgID: int):
+  msg = await channel.fetch_message(msgID)
+  await ctx.send(msg.author)
+
+import os
+
+tk = os.environ['TOKEN']
+
+bot.run(tk)
+
+Keep_Alive.keep_alive()
 
 '''
-#Director's Commentary
-
-If you see "object is not callable", it means you used some thing like 
-You want a String and you used
-BS(~~The Usual Stuff~~).text() 
-what you need it 
-BS(~~The Usual Stuff~~).text
-that () ruins it
-
-you might be wondering what is lxml?
-In that BS(features="lxml") you must had seen it, and yes you need to pip install lxml to get it
-it's a format that happens to be most suited for all this
-
-Yes I have removed the Comments from it, but they will still exist in the Requests lib / serial calls one
-#It's currently called RequestsCall.py
+if __name__ == "__main__":
+  print(asyncio.run(C.MangaUpdate()))
+  print(asyncio.run(C.EpisodeUpdate()))
 '''

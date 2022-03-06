@@ -4,6 +4,7 @@ from discord.ext import commands
 import helper_commands as hp
 import asyncio
 from replit import db
+import Keep_Alive
 
 Anime_Channel = 736777686596190208
 Manga_Channel = 736776933014110338
@@ -156,9 +157,11 @@ async def chkauth(ctx, channel: discord.TextChannel, msgID: int):
 import os
 
 tk = os.environ['TOKEN']
-
+Keep_Alive.keep_alive()
 bot.run(tk)
 
+'''
 if __name__ == "__main__":
   print(asyncio.run(C.MangaUpdate()))
   print(asyncio.run(C.EpisodeUpdate()))
+'''
