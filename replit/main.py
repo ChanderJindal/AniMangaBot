@@ -2,6 +2,7 @@ import discord
 import commands as C
 from discord.ext import commands
 import helper_commands as hp
+import asyncio
 
 Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",'enable', 'on']
 Nah = ["n","no","f","false",'disable', 'off']
@@ -35,16 +36,11 @@ async def on_message(message):#Only on_message can take in Messages
         var["description"] = hp.Translate(var["description"])
       except:pass
       await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
+  elif message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
+    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
   else:
     await bot.process_commands(message)#if none of above carry commands below
 
-'''
-@bot.event#ping reply
-async def on_message(message):
-  if message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
-    await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
-  await bot.process_commands(message)
-'''
 @bot.command()
 async def prefix(ctx):
   if bot.DelMsg:await ctx.message.delete()
@@ -64,12 +60,12 @@ async def echo(ctx, *, arg):
 @bot.command(name='anime',aliases=['A'])
 async def anime(ctx):
   if bot.DelMsg:await ctx.message.delete()
-  await ctx.send(embed = C.EpisodeUpdate())
+  await ctx.send(embed = (await C.EpisodeUpdate()))
 
 @bot.command(name='manga',aliases=['M'])
 async def manga(ctx):
   if bot.DelMsg:await ctx.message.delete()
-  await ctx.send(embed = C.MangaUpdate())
+  await ctx.send(embed =(await C.MangaUpdate()))
 
 @bot.command(name = 'autodelmessage',aliases = ['ADM'] )
 async def autodelmessage(ctx,arg):
@@ -121,6 +117,10 @@ async def chkauth(ctx, channel: discord.TextChannel, msgID: int):
 
 import os
 
-tk = 'OTM4NDg3NDExODE2NjkzODQz.YfrAgw.Jic9wLLoiyzP1cQy0yBgKPPyZcI'#os.environ['TOKEN']
+tk = os.environ['TOKEN']
 
 bot.run(tk)
+
+if __name__ == "__main__":
+  print(asyncio.run(C.MangaUpdate()))
+  print(asyncio.run(C.EpisodeUpdate()))

@@ -4,7 +4,6 @@ import aiohttp
 import asyncio
 from replit import db
 
-db["Ep"] = 1037
 db["MangaDexAnimeID"] = "7f30dfc3-0b80-4dcc-a3b9-0cd746fac005"
 db["Chapter"] = 1088
 
@@ -29,9 +28,7 @@ async def Anime():
 
   GogoLink = Link_base + EpNumber.replace(".","-")
 
-  db["Ep"] = EpNumber
-
-  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/ep' + EpNumber
+  AniMixPlay_Link = f'https://animixplay.to/v1/detective-conan/ep{EpNumber}'
 
   return EpNumber , AniMixPlay_Link , GogoLink
 
@@ -54,8 +51,8 @@ async def AnimeBackup():
   EpisodeName = LatestEp.text
   EpisodeNumber = LatestEp["href"].split('/')[-1]
 
-  AniMix_Link = "https://animixplay.to/v1/detective-conan/ep" + str(EpisodeNumber)
-  Gogo_Link = "https://gogoanime.film/detective-conan-episode-" + str(EpisodeNumber)
+  AniMix_Link = f'https://animixplay.to/v1/detective-conan/ep{EpisodeNumber}'
+  Gogo_Link = f'https://gogoanime.film/detective-conan-episode-{EpisodeNumber}'
 
   return EpisodeNumber, EpisodeName ,AniMix_Link, Gogo_Link
 
