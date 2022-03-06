@@ -3,12 +3,39 @@ import commands as C
 from discord.ext import commands
 import helper_commands as hp
 import asyncio
+from replit import db
 
+Anime_Channel = 736777686596190208
+Manga_Channel = 736776933014110338
 Yeah = ["y","ye","yes","Okay","k","kay","true","t","true",'enable', 'on']
 Nah = ["n","no","f","false",'disable', 'off']
 
 bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
+
+async def AutoUpdates():
+  Val = await C.EpisodeUpdate() #New way to check, get the regular message
+  EmbedDict = Val.to_dict()
+  if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
+    # and EmbedDict["description"] != f'**Episode#{db["Ep"]}'
+    desc = str(EmbedDict["description"])
+    desc = desc.split(" ")[0]
+    desc = desc.split("#")[-1]
+    if str(desc) != str(db["Ep"]): #make sure class type is same
+      channel = bot.get_channel(Anime_Channel)
+      await channel.send(embed=Val)
+
+  Val = await C.MangaUpdate()#same as above but for manga
+  EmbedDict = Val.to_dict()
+  if EmbedDict["title"] != "Error!":
+    desc = str(EmbedDict["description"])
+    desc = desc.split(" ")[0]
+    desc = desc.split("#")[-1]
+    if str(desc) != str(db["Chapter"]):
+        channel = bot.get_channel(Manga_Channel)
+        await channel.send(embed=Val)
+  return 
+
 
 @bot.event
 async def on_ready():
@@ -16,6 +43,10 @@ async def on_ready():
     #this is what is shows when the bot is online
 
     bot.DelMsg = True
+    while True:
+      await AutoUpdates()
+      await asyncio.sleep(3600)
+      #Sleep for 1 hr
 
 @bot.event#ping reply
 async def on_message(message):#Only on_message can take in Messages
@@ -40,6 +71,13 @@ async def on_message(message):#Only on_message can take in Messages
     await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
   else:
     await bot.process_commands(message)#if none of above carry commands below
+
+@bot.command()
+async def testAU(ctx):
+  await ctx.send("The Command is here.")
+  await AutoUpdates()
+  await ctx.send("The Command is Not Here.")
+
 
 @bot.command()
 async def prefix(ctx):
