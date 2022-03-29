@@ -3,8 +3,8 @@ import commands as C
 from discord.ext import commands
 import helper_commands as hp
 import asyncio
-from replit import db
 import Keep_Alive
+from replit import db
 
 Anime_Channel = 736777686596190208
 Manga_Channel = 736776933014110338
@@ -15,45 +15,34 @@ bot = commands.Bot(command_prefix='$', case_insensitive=True)
 #This is to check prefix, yes prefix can be changed using file system
 
 async def AutoUpdates():
-  Val = await C.EpisodeUpdate() #New way to check, get the regular message
-  EmbedDict = Val.to_dict()
-  if EmbedDict["title"] != "Error!": #if not Error, i.e. the function is working
-    # and EmbedDict["description"] != f'**Episode#{db["Ep"]}'
-    desc = str(EmbedDict["description"])
-    desc = desc.split(" ")[0]
-    desc = desc.split("#")[-1]
-    if str(desc) != str(db["Ep"]): #make sure class type is same
-      channel = bot.get_channel(Anime_Channel)
-      await channel.send(embed=Val)
+  Val,Update = await C.EpisodeUpdate() #New way to check, get the regular message
 
-  Val = await C.MangaUpdate()#same as above but for manga
-  EmbedDict = Val.to_dict()
-  if EmbedDict["title"] != "Error!":
-    desc = str(EmbedDict["description"])
-    desc = desc.split(" ")[0]
-    desc = desc.split("#")[-1]
-    if str(desc) != str(db["Chapter"]):
-        channel = bot.get_channel(Manga_Channel)
-        await channel.send(embed=Val)
+  if Update: #Just see if it's an update
+    channel = bot.get_channel(Anime_Channel)
+    await channel.send(embed=Val)
+
+  Val,Update = await C.MangaUpdate()#same as above but for manga
+  if Update:
+      channel = bot.get_channel(Manga_Channel)
+      await channel.send(embed=Val)
   return 
 
 
 @bot.event
 async def on_ready():
-    print('We can begin the Crafting as {0.user}'.format(bot))
-    #this is what is shows when the bot is online
-
-    bot.DelMsg = True
-    while True:
-      await AutoUpdates()
-      await asyncio.sleep(3600)
-      #Sleep for 1 hr
+  print('We can begin the Crafting as {0.user}'.format(bot))
+  #this is what is shows when the bot is online
+  bot.DelMsg = True
+  while True:
+    await AutoUpdates()
+    await asyncio.sleep(720)
+    #Sleep for 5 min
 
 @bot.event#ping reply
 async def on_message(message):#Only on_message can take in Messages
   if message.author.bot == bot.user: #it's not from this bot itself
     return
-  if message.channel.id == 829814770453839895 and message.author == 'MEE6#4876': #Tweet Translate
+  if str(message.channel.id) == "774934515817644043" and str(message.author.id) == "159985870458322944" and message.emdebs: #Tweet Translate
     #Check that it's in Twitter Channel then, it's from MEE6
     embeds = message.embeds #rest is same as {getmsg}
     for e in embeds:
@@ -99,12 +88,22 @@ async def echo(ctx, *, arg):
 @bot.command(name='anime',aliases=['A'])
 async def anime(ctx):
   if bot.DelMsg:await ctx.message.delete()
-  await ctx.send(embed = (await C.EpisodeUpdate()))
+  val,update = await C.EpisodeUpdate()
+  await ctx.send(embed = val)
+  if update:
+    channel = bot.get_channel(Manga_Channel)
+    await channel.send(embed=val)
+    await ctx.send(f'Thanks {ctx.authon.mention} for a check!')
 
 @bot.command(name='manga',aliases=['M'])
 async def manga(ctx):
   if bot.DelMsg:await ctx.message.delete()
-  await ctx.send(embed =(await C.MangaUpdate()))
+  val,update = await C.MangaUpdate()
+  await ctx.send(embed =val)
+  if update:
+    channel = bot.get_channel(Anime_Channel)
+    await channel.send(embed=val)
+    await ctx.send(f'Thanks {ctx.author.mention} for a check!')
 
 @bot.command(name = 'autodelmessage',aliases = ['ADM'] )
 async def autodelmessage(ctx,arg):
@@ -153,6 +152,12 @@ async def getmsgdict(ctx, channel: discord.TextChannel, msgID: int):
 async def chkauth(ctx, channel: discord.TextChannel, msgID: int):
   msg = await channel.fetch_message(msgID)
   await ctx.send(msg.author)
+
+@bot.command()
+async def SetM(ctx,number:int):
+  db["Chapter"] = number
+  await ctx.send("The new value is ",db["Chapter"])
+  
 
 import os
 
