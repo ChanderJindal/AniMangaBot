@@ -27,7 +27,6 @@ async def AutoUpdates():
       await channel.send(embed=Val)
   return 
 
-
 @bot.event
 async def on_ready():
   print('We can begin the Crafting as {0.user}'.format(bot))
@@ -42,21 +41,26 @@ async def on_ready():
 async def on_message(message):#Only on_message can take in Messages
   if message.author.bot == bot.user: #it's not from this bot itself
     return
-  if str(message.channel.id) == "774934515817644043" and str(message.author.id) == "159985870458322944" and message.emdebs: #Tweet Translate
+  if str(message.channel.id) == "774934515817644043" and str(message.author.id) == "159985870458322944":
+#Tweet Translate
     #Check that it's in Twitter Channel then, it's from MEE6
-    embeds = message.embeds #rest is same as {getmsg}
-    for e in embeds:
-      var = e.to_dict()#make embed to dict
-      try:#these 3 had text in jp in them, so if they are there then translate them
-        var["footer"]["text"] = hp.Translate(var["footer"]["text"])
-      except:pass
-      try:
-        var["author"]["name"] = hp.Translate(var["author"]["name"])
-      except:pass
-      try:
-        var["description"] = hp.Translate(var["description"])
-      except:pass
-      await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
+    try:
+      embeds = message.embeds #rest is same as {getmsg}
+      for e in embeds:
+        var = e.to_dict()#make embed to dict
+        try:#these 3 had text in jp in them, so if they are there then translate them
+          var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+        except:pass
+        try:
+          var["author"]["name"] = hp.Translate(var["author"]["name"])
+        except:pass
+        try:
+          var["description"] = hp.Translate(var["description"])
+        except:pass
+        await message.channel.send(embed=discord.Embed.from_dict(var))#change back dict to embed, and send it
+    except:
+      print(f'{message.id} is not an embeded one, in channel {message.channel.id}')
+
   elif message.author.bot == False and bot.user.mentioned_in(message) and len(message.content) == len(bot.user.mention)+1:
     await message.channel.send(f'Hello! I am the {bot.user.mention}!\nMy Prefix is $')
   else:
