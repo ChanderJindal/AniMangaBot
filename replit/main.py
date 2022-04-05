@@ -161,7 +161,30 @@ async def chkauth(ctx, channel: discord.TextChannel, msgID: int):
 async def SetM(ctx,number:int):
   db["Chapter"] = number
   await ctx.send("The new value is ",db["Chapter"])
-  
+
+@bot.command()
+async def getmsgin(ctx, channel: discord.TextChannel, msgID: int, Schannel = "True" , to_lang : str = 'en' ):
+  #you need to specify the channel from where the message is picked <#Channel.id> format then, message ID, 
+  #PS:- The channel must be present in server
+  msg = await channel.fetch_message(msgID)#got the message
+  embeds = msg.embeds #embeded part
+  for e in embeds:
+    var = e.to_dict()# made it into a dict()
+
+    try:var["footer"]["text"] = hp.Translate(var["footer"]["text"])
+    except:pass
+    try:var["author"]["name"] = hp.Translate(var["author"]["name"])
+    except:pass
+    try:
+      var["description"] = hp.Translate(var["description"])
+    except:pass
+  if Schannel.lower() in Yeah:
+    await ctx.send(embed=discord.Embed.from_dict(var))
+  else:
+    try:
+      await bot.get_channel(int(Schannel)).send(embed=discord.Embed.from_dict(var))
+    except:
+      await channel.send(embed=discord.Embed.from_dict(var))
 
 import os
 
