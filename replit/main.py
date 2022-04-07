@@ -21,6 +21,12 @@ async def AutoUpdates():
     channel = bot.get_channel(Anime_Channel)
     await channel.send(embed=Val)
 
+  Val,Update = await C.EpisodeUpdate0() #New way to check, get the regular message
+
+  if Update: #Just see if it's an update
+    channel = bot.get_channel(Anime_Channel)
+    await channel.send(embed=Val)
+
   Val,Update = await C.MangaUpdate()#same as above but for manga
   if Update:
       channel = bot.get_channel(Manga_Channel)
@@ -188,9 +194,9 @@ async def getmsgin(ctx, channel: discord.TextChannel, msgID: int, Schannel = "Tr
 
 import os
 
-tk = os.environ['TOKEN']
 Keep_Alive.keep_alive()
-bot.run(tk)
+bot.run(os.getenv("TOKEN"))
+
 
 '''
 if __name__ == "__main__":
